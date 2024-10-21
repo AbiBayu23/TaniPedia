@@ -1,45 +1,23 @@
 package main;
 
-import controller.UserController;
-import dao.UserDAO;
-import view.UserView;
+import controller.HomeController;
+import controller.MainController;
+import model.UserModel;
 
 public class Main {
     public static void main(String[] args) {
-        UserView view = new UserView();
-        UserDAO dao = new UserDAO();
-        UserController controller = new UserController(view, dao);
-
-        boolean running = true;
-
-        while (running) {
-            System.out.println("=== Menu ===");
-            System.out.println("1. Register");
-            System.out.println("2. Login");
-            System.out.println("3. Exit");
-            System.out.print("Pilih: ");
+        while (true) {
+            HomeController homeController = new HomeController();
+            UserModel loggedInUser = homeController.start();
             
-            int choice = new java.util.Scanner(System.in).nextInt();
-
-            switch (choice) {
-                case 1:
-                    // Register user
-                    controller.register();
-                    break;
-
-                case 2:
-                    // Login user
-                    controller.login();
-                    break;
-
-                case 3:
-                    // Exit
-                    running = false;
-                    break;
-
-                default:
-                    view.showMessage("Pilihan tidak valid!");
-                    break;
+            // If the user logs in successfully, proceed to the main application
+            if (loggedInUser != null) {
+                MainController mainController = new MainController(loggedInUser);
+                mainController.start();  // When the user logs out, it will return here
+            } else {
+                // If the user chose to exit the application from HomeController
+                System.out.println("Thank you for using TaniPedia. Goodbye!");
+                break;
             }
         }
     }
