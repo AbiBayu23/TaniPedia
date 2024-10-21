@@ -1,12 +1,9 @@
+BaseDAO.java
 package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-/**
- *
- * @author AERO
- */
 public class BaseDAO {
 
     private static String DB_NAME = "tanipedia";
