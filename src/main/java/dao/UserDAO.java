@@ -1,63 +1,53 @@
 package dao;
 
-import model.User;
+import model.UserModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UserDAO {
 
-    // Method untuk menambahkan user baru ke database
-    public void addUser(User user) {
-        Connection con = BaseDAO.getCon();
-        String query = "INSERT INTO users (idUser, nama, noTelp, password, role) VALUES (?, ?, ?, ?, ?)";
-        try {
+    public boolean registerUser(UserModel user) {
+        try (Connection con = BaseDAO.getCon()) {
+            String query = "INSERT INTO user (password_user, nama_user, email_user, nomor_hp, alamat_user, role) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setInt(1, user.getIdUser());
-            ps.setString(2, user.getNama());
-            ps.setString(3, user.getNoTelp());
-            ps.setString(4, user.getPassword());
-            ps.setString(5, user.getRole());
-            ps.executeUpdate();
+            ps.setString(1, user.getPasswordUser());
+            ps.setString(2, user.getNamaUser());
+            ps.setString(3, user.getEmailUser());
+            ps.setString(4, user.getNomorHp());
+            ps.setString(5, user.getAlamatUser());
+            ps.setString(6, user.getRole());
+
+            int result = ps.executeUpdate();
+            return result > 0;
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            BaseDAO.closeCon(con);
         }
+        return false;
     }
 
-    // Method untuk mendapatkan user berdasarkan noTelp
-    public User getUserByNoTelp(String noTelp) {
-        Connection con = BaseDAO.getCon();
-        String query = "SELECT * FROM users WHERE noTelp = ?";
-        User user = null;
-        try {
+    public UserModel loginUser(String email, String password) {
+        UserModel user = null;
+        try (Connection con = BaseDAO.getCon()) {
+            String query = "SELECT * FROM user WHERE email_user = ? AND password_user = ?";
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1, noTelp);
+            ps.setString(1, email);
+            ps.setString(2, password);
+
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                user = new User(
-                    rs.getInt("idUser"),
-                    rs.getString("nama"),
-                    rs.getString("noTelp"),
-                    rs.getString("password"),
-                    rs.getString("role")
-                );
+                user = new UserModel();
+                user.setIdUser(rs.getInt("id_user"));
+                user.setPasswordUser(rs.getString("password_user"));
+                user.setNamaUser(rs.getString("nama_user"));
+                user.setEmailUser(rs.getString("email_user"));
+                user.setNomorHp(rs.getString("nomor_hp"));
+                user.setAlamatUser(rs.getString("alamat_user"));
+                user.setRole(rs.getString("role"));
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            BaseDAO.closeCon(con);
         }
         return user;
-    }
-
-    // Method untuk memvalidasi login user
-    public boolean validateLogin(String noTelp, String password) {
-        User user = getUserByNoTelp(noTelp);
-        if (user != null && user.getPassword().equals(password)) {
-            return true;
-        }
-        return false;
     }
 }
