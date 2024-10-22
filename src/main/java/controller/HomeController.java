@@ -52,7 +52,6 @@ public class HomeController {
         newUser.setEmailUser(view.getEmail());
         newUser.setPasswordUser(view.getPassword());
         newUser.setNomorHp(view.getNomorHp());
-        newUser.setAlamatUser(view.getAlamat());
         newUser.setRole(view.getRole());
 
         boolean success = userDAO.registerUser(newUser);
