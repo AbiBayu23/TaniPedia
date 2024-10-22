@@ -14,6 +14,11 @@ public class HomeView {
         return scanner.nextInt();
     }
 
+    public String getNama() {
+        System.out.print("Enter your name: ");
+        return scanner.next();
+    }
+
     public String getEmail() {
         System.out.print("Enter email: ");
         return scanner.next();
@@ -24,18 +29,8 @@ public class HomeView {
         return scanner.next();
     }
 
-    public String getNama() {
-        System.out.print("Enter your name: ");
-        return scanner.next();
-    }
-
     public String getNomorHp() {
         System.out.print("Enter your phone number: ");
-        return scanner.next();
-    }
-
-    public String getAlamat() {
-        System.out.print("Enter your address: ");
         return scanner.next();
     }
 
