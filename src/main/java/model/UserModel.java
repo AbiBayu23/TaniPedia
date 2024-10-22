@@ -6,7 +6,6 @@ public class UserModel {
     private String namaUser;
     private String emailUser;
     private String nomorHp;
-    private String alamatUser;
     private String role;
 
     public int getIdUser() {
@@ -47,14 +46,6 @@ public class UserModel {
 
     public void setNomorHp(String nomorHp) {
         this.nomorHp = nomorHp;
-    }
-
-    public String getAlamatUser() {
-        return alamatUser;
-    }
-
-    public void setAlamatUser(String alamatUser) {
-        this.alamatUser = alamatUser;
     }
 
     public String getRole() {
