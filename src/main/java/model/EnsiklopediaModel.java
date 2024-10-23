@@ -1,5 +1,4 @@
 package model;
-
 public class EnsiklopediaModel {
     private int idEnsiklopedia;
     private String namaEnsiklopedia;
