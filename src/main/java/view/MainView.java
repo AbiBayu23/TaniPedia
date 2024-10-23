@@ -72,7 +72,11 @@ public class MainView {
         System.out.println("14. Tambah Ensiklopedia");
         System.out.println("15. Edit Ensiklopedia");
         System.out.println("16. Hapus Ensiklopedia");
-        System.out.println("17. Keluar");
+        System.out.println("17. Lihat Kamus");
+        System.out.println("18. Tambah Kamus");
+        System.out.println("19. Edit Kamus");
+        System.out.println("20. Delete Kamus");
+        System.out.println("21. Keluar");
         System.out.print("Pilih opsi: ");
         return scanner.nextInt();
     }
@@ -84,7 +88,8 @@ public class MainView {
         System.out.println("2. Lihat Pupuk");
         System.out.println("3. Lihat Pestisida");
         System.out.println("4. Lihat Ensiklopedia");
-        System.out.println("5. Keluar");
+        System.out.println("5. Lihat Kamus");
+        System.out.println("6. Keluar");
         System.out.print("Pilih opsi: ");
         return scanner.nextInt();
     }
@@ -132,6 +137,14 @@ public class MainView {
         ensiklopedia.setKonten(scanner.next());
         return ensiklopedia;
     }
+    public KamusModel getKamusDetails() {
+        KamusModel kamus = new KamusModel();
+        System.out.print("Kata/istilah: ");
+        kamus.setIstilahKamus(scanner.next());
+        System.out.print("Masukan Deskripsi: ");
+        kamus.setKontenKamus(scanner.next());
+        return kamus;
+    }
 
     // Mendapatkan ID tanaman
     public int getTanamanId() {
@@ -154,6 +167,10 @@ public class MainView {
     // Mendapatkan ID ensiklopedia
     public int getEnsiklopediaId() {
         System.out.print("Masukkan ID Ensiklopedia: ");
+        return scanner.nextInt();
+    }
+    public int getKamusId() {
+        System.out.print("Masukkan ID Kamus: ");
         return scanner.nextInt();
     }
 }
