@@ -4,10 +4,10 @@ import model.TanamanModel;
 import model.PupukModel;
 import model.PestisidaModel;
 import model.EnsiklopediaModel;
-import model.KamusModel;
 
 import java.util.List;
 import java.util.Scanner;
+import model.KamusModel;
 
 public class MainView {
     private Scanner scanner = new Scanner(System.in);
@@ -53,15 +53,15 @@ public class MainView {
                     ", Konten: " + ensiklopedia.getKonten());
         }
     }
+    
     public void showKamusList(List<KamusModel> kamusList) {
-        System.out.println("Daftar Ensiklopedia:");
+        System.out.println("Daftar Kamus:");
         for (KamusModel kamus : kamusList) {
             System.out.println("ID: " + kamus.getIdKamus() +
                     ", istilah: " + kamus.getIstilahKamus()+
                     ", Konten: " + kamus.getKontenKamus());
         }
     }
-
 
     // Menu admin
     public int showAdminMenu() {
@@ -183,4 +183,5 @@ public class MainView {
         System.out.print("Masukkan ID Kamus: ");
         return scanner.nextInt();
     }
+
 }
