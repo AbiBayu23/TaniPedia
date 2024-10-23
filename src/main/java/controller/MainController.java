@@ -4,6 +4,7 @@ import dao.TanamanDAO;
 import dao.PupukDAO;
 import dao.PestisidaDAO;
 import dao.EnsiklopediaDAO;
+import dao.KamusDAO;
 import model.TanamanModel;
 import model.PupukModel;
 import model.PestisidaModel;
@@ -11,6 +12,7 @@ import model.EnsiklopediaModel;
 import model.UserModel;
 import view.MainView;
 import java.util.List;
+import model.KamusModel;
 
 public class MainController {
     private MainView view;
@@ -29,6 +31,7 @@ public class MainController {
         this.ensiklopediaDAO = new EnsiklopediaDAO(); // Inisialisasi EnsiklopediaDAO
         this.currentUser = user;
         this.kamusDAO = new KamusDAO();
+    }
 
     public void start() {
         boolean isRunning = true;
