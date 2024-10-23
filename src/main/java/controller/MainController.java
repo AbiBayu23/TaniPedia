@@ -19,6 +19,7 @@ public class MainController {
     private PestisidaDAO pestisidaDAO;
     private EnsiklopediaDAO ensiklopediaDAO; // Tambahkan DAO untuk ensiklopedia
     private UserModel currentUser;
+    private KamusDAO kamusDAO;
 
     public MainController(UserModel user) {
         this.view = new MainView();
@@ -27,7 +28,7 @@ public class MainController {
         this.pestisidaDAO = new PestisidaDAO();
         this.ensiklopediaDAO = new EnsiklopediaDAO(); // Inisialisasi EnsiklopediaDAO
         this.currentUser = user;
-    }
+        this.kamusDAO = new KamusDAO();
 
     public void start() {
         boolean isRunning = true;
