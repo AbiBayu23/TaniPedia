@@ -52,6 +52,15 @@ public class MainView {
                     ", Konten: " + ensiklopedia.getKonten());
         }
     }
+    public void showKamusList(List<KamusModel> kamusList) {
+        System.out.println("Daftar Ensiklopedia:");
+        for (KamusModel kamus : kamusList) {
+            System.out.println("ID: " + kamus.getIdKamus() +
+                    ", istilah: " + kamus.getIstilahKamus()+
+                    ", Konten: " + kamus.getKontenKamus());
+        }
+    }
+
 
     // Menu admin
     public int showAdminMenu() {
