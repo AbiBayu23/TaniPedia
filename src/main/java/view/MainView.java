@@ -4,6 +4,7 @@ import model.TanamanModel;
 import model.PupukModel;
 import model.PestisidaModel;
 import model.EnsiklopediaModel;
+import model.KamusModel;
 
 import java.util.List;
 import java.util.Scanner;
