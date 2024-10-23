@@ -3,9 +3,11 @@ package controller;
 import dao.TanamanDAO;
 import dao.PupukDAO;
 import dao.PestisidaDAO;
+import dao.EnsiklopediaDAO;
 import model.TanamanModel;
 import model.PupukModel;
 import model.PestisidaModel;
+import model.EnsiklopediaModel;
 import model.UserModel;
 import view.MainView;
 import java.util.List;
@@ -14,14 +16,16 @@ public class MainController {
     private MainView view;
     private TanamanDAO tanamanDAO;
     private PupukDAO pupukDAO;
-    private PestisidaDAO pestisidaDAO; 
+    private PestisidaDAO pestisidaDAO;
+    private EnsiklopediaDAO ensiklopediaDAO; // Tambahkan DAO untuk ensiklopedia
     private UserModel currentUser;
 
     public MainController(UserModel user) {
         this.view = new MainView();
         this.tanamanDAO = new TanamanDAO();
         this.pupukDAO = new PupukDAO();
-        this.pestisidaDAO = new PestisidaDAO(); 
+        this.pestisidaDAO = new PestisidaDAO();
+        this.ensiklopediaDAO = new EnsiklopediaDAO(); // Inisialisasi EnsiklopediaDAO
         this.currentUser = user;
     }
 
@@ -39,11 +43,15 @@ public class MainController {
                     case 6 -> addPupuk();
                     case 7 -> editPupuk();
                     case 8 -> deletePupuk();
-                    case 9 -> viewPestisida(); 
-                    case 10 -> addPestisida(); 
-                    case 11 -> editPestisida(); 
-                    case 12 -> deletePestisida(); 
-                    case 13 -> {
+                    case 9 -> viewPestisida();
+                    case 10 -> addPestisida();
+                    case 11 -> editPestisida();
+                    case 12 -> deletePestisida();
+                    case 13 -> viewEnsiklopedia(); // Lihat Ensiklopedia
+                    case 14 -> addEnsiklopedia(); // Tambah Ensiklopedia
+                    case 15 -> editEnsiklopedia(); // Edit Ensiklopedia
+                    case 16 -> deleteEnsiklopedia(); // Hapus Ensiklopedia
+                    case 17 -> {
                         System.out.println("Keluar dari aplikasi...");
                         isRunning = false; // End the loop to exit
                     }
@@ -54,8 +62,9 @@ public class MainController {
                 switch (choice) {
                     case 1 -> viewTanaman();
                     case 2 -> viewPupuk();
-                    case 3 -> viewPestisida(); // Tambahkan view pestisida
-                    case 4 -> {
+                    case 3 -> viewPestisida();
+                    case 4 -> viewEnsiklopedia(); // Customer dapat melihat ensiklopedia
+                    case 5 -> {
                         System.out.println("Keluar dari aplikasi...");
                         isRunning = false; // End the loop to exit
                     }
@@ -77,7 +86,12 @@ public class MainController {
 
     private void viewPestisida() {
         List<PestisidaModel> pestisidaList = pestisidaDAO.getAllPestisida();
-        view.showPestisidaList(pestisidaList); // Panggil view untuk menampilkan pestisida
+        view.showPestisidaList(pestisidaList);
+    }
+
+    private void viewEnsiklopedia() {
+        List<EnsiklopediaModel> ensiklopediaList = ensiklopediaDAO.getAllEnsiklopedia();
+        view.showEnsiklopediaList(ensiklopediaList); // Panggil view untuk menampilkan ensiklopedia
     }
 
     private void addTanaman() {
@@ -87,6 +101,36 @@ public class MainController {
             System.out.println("Tanaman berhasil ditambahkan.");
         } else {
             System.out.println("Gagal menambahkan tanaman.");
+        }
+    }
+
+    private void addPupuk() {
+        PupukModel newPupuk = view.getPupukDetails();
+        boolean success = pupukDAO.addPupuk(newPupuk);
+        if (success) {
+            System.out.println("Pupuk berhasil ditambahkan.");
+        } else {
+            System.out.println("Gagal menambahkan pupuk.");
+        }
+    }
+
+    private void addPestisida() {
+        PestisidaModel newPestisida = view.getPestisidaDetails();
+        boolean success = pestisidaDAO.addPestisida(newPestisida);
+        if (success) {
+            System.out.println("Pestisida berhasil ditambahkan.");
+        } else {
+            System.out.println("Gagal menambahkan pestisida.");
+        }
+    }
+
+    private void addEnsiklopedia() {
+        EnsiklopediaModel newEnsiklopedia = view.getEnsiklopediaDetails();
+        boolean success = ensiklopediaDAO.addEnsiklopedia(newEnsiklopedia);
+        if (success) {
+            System.out.println("Ensiklopedia berhasil ditambahkan.");
+        } else {
+            System.out.println("Gagal menambahkan ensiklopedia.");
         }
     }
 
@@ -102,26 +146,6 @@ public class MainController {
         }
     }
 
-    private void deleteTanaman() {
-        int idTanaman = view.getTanamanId();
-        boolean success = tanamanDAO.deleteTanaman(idTanaman);
-        if (success) {
-            System.out.println("Tanaman berhasil dihapus.");
-        } else {
-            System.out.println("Gagal menghapus tanaman.");
-        }
-    }
-
-    private void addPupuk() {
-        PupukModel newPupuk = view.getPupukDetails();
-        boolean success = pupukDAO.addPupuk(newPupuk);
-        if (success) {
-            System.out.println("Pupuk berhasil ditambahkan.");
-        } else {
-            System.out.println("Gagal menambahkan pupuk.");
-        }
-    }
-
     private void editPupuk() {
         int idPupuk = view.getPupukId();
         PupukModel updatedPupuk = view.getPupukDetails();
@@ -131,6 +155,40 @@ public class MainController {
             System.out.println("Pupuk berhasil diubah.");
         } else {
             System.out.println("Gagal mengubah pupuk.");
+        }
+    }
+
+    private void editPestisida() {
+        int idPestisida = view.getPestisidaId();
+        PestisidaModel updatedPestisida = view.getPestisidaDetails();
+        updatedPestisida.setIdPestisida(idPestisida);
+        boolean success = pestisidaDAO.updatePestisida(updatedPestisida);
+        if (success) {
+            System.out.println("Pestisida berhasil diubah.");
+        } else {
+            System.out.println("Gagal mengubah pestisida.");
+        }
+    }
+
+    private void editEnsiklopedia() {
+        int idEnsiklopedia = view.getEnsiklopediaId();
+        EnsiklopediaModel updatedEnsiklopedia = view.getEnsiklopediaDetails();
+        updatedEnsiklopedia.setIdEnsiklopedia(idEnsiklopedia);
+        boolean success = ensiklopediaDAO.updateEnsiklopedia(updatedEnsiklopedia);
+        if (success) {
+            System.out.println("Ensiklopedia berhasil diubah.");
+        } else {
+            System.out.println("Gagal mengubah ensiklopedia.");
+        }
+    }
+
+    private void deleteTanaman() {
+        int idTanaman = view.getTanamanId();
+        boolean success = tanamanDAO.deleteTanaman(idTanaman);
+        if (success) {
+            System.out.println("Tanaman berhasil dihapus.");
+        } else {
+            System.out.println("Gagal menghapus tanaman.");
         }
     }
 
@@ -144,35 +202,23 @@ public class MainController {
         }
     }
 
-    private void addPestisida() {
-        PestisidaModel newPestisida = view.getPestisidaDetails(); // Ambil detail pestisida dari view
-        boolean success = pestisidaDAO.addPestisida(newPestisida);
-        if (success) {
-            System.out.println("Pestisida berhasil ditambahkan.");
-        } else {
-            System.out.println("Gagal menambahkan pestisida.");
-        }
-    }
-
-    private void editPestisida() {
-        int idPestisida = view.getPestisidaId(); // Ambil ID pestisida dari view
-        PestisidaModel updatedPestisida = view.getPestisidaDetails(); // Ambil detail pestisida dari view
-        updatedPestisida.setIdPestisida(idPestisida);
-        boolean success = pestisidaDAO.updatePestisida(updatedPestisida);
-        if (success) {
-            System.out.println("Pestisida berhasil diubah.");
-        } else {
-            System.out.println("Gagal mengubah pestisida.");
-        }
-    }
-
     private void deletePestisida() {
-        int idPestisida = view.getPestisidaId(); // Ambil ID pestisida dari view
+        int idPestisida = view.getPestisidaId();
         boolean success = pestisidaDAO.deletePestisida(idPestisida);
         if (success) {
             System.out.println("Pestisida berhasil dihapus.");
         } else {
             System.out.println("Gagal menghapus pestisida.");
+        }
+    }
+
+    private void deleteEnsiklopedia() {
+        int idEnsiklopedia = view.getEnsiklopediaId();
+        boolean success = ensiklopediaDAO.deleteEnsiklopedia(idEnsiklopedia);
+        if (success) {
+            System.out.println("Ensiklopedia berhasil dihapus.");
+        } else {
+            System.out.println("Gagal menghapus ensiklopedia.");
         }
     }
 }
