@@ -51,7 +51,11 @@ public class MainController {
                     case 14 -> addEnsiklopedia(); // Tambah Ensiklopedia
                     case 15 -> editEnsiklopedia(); // Edit Ensiklopedia
                     case 16 -> deleteEnsiklopedia(); // Hapus Ensiklopedia
-                    case 17 -> {
+                    case 17 -> viewKamus(); 
+                    case 18 -> addKamus(); 
+                    case 19 -> editKamus(); 
+                    case 20 -> deleteKamus(); 
+                    case 21 -> {
                         System.out.println("Keluar dari aplikasi...");
                         isRunning = false; // End the loop to exit
                     }
