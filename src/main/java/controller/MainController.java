@@ -88,6 +88,10 @@ public class MainController {
         List<PestisidaModel> pestisidaList = pestisidaDAO.getAllPestisida();
         view.showPestisidaList(pestisidaList);
     }
+    private void viewKamus() {
+        List<KamusModel> kamusList = kamusDAO.getAllKamus();
+        view.showKamusList(kamusList); // Panggil view untuk menampilkan pestisida
+    }
 
     private void viewEnsiklopedia() {
         List<EnsiklopediaModel> ensiklopediaList = ensiklopediaDAO.getAllEnsiklopedia();
@@ -219,6 +223,37 @@ public class MainController {
             System.out.println("Ensiklopedia berhasil dihapus.");
         } else {
             System.out.println("Gagal menghapus ensiklopedia.");
+        }
+    }
+    private void addKamus() {
+        KamusModel newKamus = view.getKamusDetails(); // Ambil detail pestisida dari view
+        boolean success = kamusDAO.addKamus(newKamus);
+        if (success) {
+            System.out.println("Istilah berhasil ditambahkan.");
+        } else {
+            System.out.println("Gagal menambahkan istilah.");
+        }
+    }
+
+    private void editKamus() {
+        int idKamus = view.getKamusId();
+        KamusModel updatedKamus = view.getKamusDetails();
+        updatedKamus.setIdKamus(idKamus);
+        boolean success = kamusDAO.updateKamus(updatedKamus);
+        if (success) {
+            System.out.println("Istilah berhasil diubah.");
+        } else {
+            System.out.println("Gagal mengubah istilah.");
+        }
+    }
+
+    private void deleteKamus() {
+        int idKamus = view.getKamusId(); 
+        boolean success = kamusDAO.deleteKamus(idKamus);
+        if (success) {
+            System.out.println("Istilah berhasil dihapus.");
+        } else {
+            System.out.println("Gagal menghapus istilah.");
         }
     }
 }
