@@ -1,13 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+public class KamusModel {
+    private int idKamus;
+    private String istilahKamus;
+    private String kontenKamus;
 
-/**
- *
- * @author abiba
- */
-public class Kamus {
+    public int getIdKamus() {
+        return idKamus;
+    }
+
+    public void setIdKamus(int idKamus) {
+        this.idKamus = idKamus;
+    }
+
+    public String getIstilahKamus() {
+        return istilahKamus;
+    }
+
+    public void setIstilahKamus(String istilahKamus) {
+        this.istilahKamus = istilahKamus;
+    }
+
+    public String getKontenKamus() {
+        return kontenKamus;
+    }
+
+    public void setKontenKamus(String kontenKamus) {
+        this.kontenKamus = kontenKamus;
+    }
     
 }
