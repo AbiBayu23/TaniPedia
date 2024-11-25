@@ -1,51 +1,33 @@
 package dao;
 
-import model.UserModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDAO {
 
-    public boolean registerUser(UserModel user) {
-        try (Connection con = BaseDAO.getCon()) {
-            String query = "INSERT INTO user (nama_user, email_user, password_user,  nomor_hp, Role) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1, user.getNamaUser());
-            ps.setString(2, user.getEmailUser());
-            ps.setString(3, user.getPasswordUser());
-            ps.setString(4, user.getNomorHp());
-            ps.setString(5, user.getRole());
+    public boolean validateUser(String username, String email, String password) {
+        String query = "SELECT * FROM users WHERE username = ? AND email = ? AND password = ?";
+        Connection con = null;
 
-            int result = ps.executeUpdate();
-            return result > 0;
-        } catch (Exception e) {
+        try {
+            // Mendapatkan koneksi dari BaseDAO
+            con = BaseDAO.getCon();
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            stmt.setString(3, password);
+
+            // Eksekusi query
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // Jika ada hasil, berarti valid
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            // Tutup koneksi menggunakan BaseDAO
+            BaseDAO.closeCon(con);
         }
         return false;
-    }
-
-    public UserModel loginUser(String email, String password) {
-        UserModel user = null;
-        try (Connection con = BaseDAO.getCon()) {
-            String query = "SELECT * FROM user WHERE email_user = ? AND password_user = ?";
-            PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1, email);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new UserModel();
-                user.setIdUser(rs.getInt("id_user"));
-                user.setNamaUser(rs.getString("nama_user"));
-                user.setEmailUser(rs.getString("email_user"));
-                user.setPasswordUser(rs.getString("password_user"));
-                user.setNomorHp(rs.getString("nomor_hp"));
-                user.setRole(rs.getString("Role"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
     }
 }

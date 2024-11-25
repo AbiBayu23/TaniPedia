@@ -1,24 +1,26 @@
 package main;
 
-import controller.HomeController;
-import controller.MainController;
-import model.UserModel;
+import java.io.File;
+import java.net.URL;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        URL url = new File("src/main/java/view/Main.fxml").toURI().toURL();
+        Parent root = FXMLLoader.load(url);
+        Scene scene = new Scene(root);
+        primaryStage.setTitle("Login Application");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
     public static void main(String[] args) {
-        while (true) {
-            HomeController homeController = new HomeController();
-            UserModel loggedInUser = homeController.start();
-            
-            // If the user logs in successfully, proceed to the main application
-            if (loggedInUser != null) {
-                MainController mainController = new MainController(loggedInUser);
-                mainController.start();  // When the user logs out, it will return here
-            } else {
-                // If the user chose to exit the application from HomeController
-                System.out.println("Thank you for using TaniPedia. Goodbye!");
-                break;
-            }
-        }
+        launch(args);
     }
 }

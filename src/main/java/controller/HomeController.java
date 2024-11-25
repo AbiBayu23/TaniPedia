@@ -1,64 +1,77 @@
 package controller;
 
 import dao.UserDAO;
-import model.UserModel;
-import view.HomeView;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class HomeController {
-    private HomeView view;
+
+    @FXML
+    private TextField Username;
+
+    @FXML
+    private TextField Email;
+
+    @FXML
+    private TextField Pass;
+
+    @FXML
+    private AnchorPane rootPane;
+
     private UserDAO userDAO;
 
     public HomeController() {
-        view = new HomeView();
-        userDAO = new UserDAO();
+        // Inisialisasi UserDAO
+        this.userDAO = new UserDAO();
     }
 
-    public UserModel start() {
-        while (true) {
-            int choice = view.showMenu();
-            switch (choice) {
-                case 1 -> {
-                    UserModel loggedInUser = login();
-                    if (loggedInUser != null) {
-                        return loggedInUser; 
-                    }
-                }
-                case 2 -> register();
-                case 3 -> {
-                    System.out.println("Exiting...");
-                    return null;
-                }
-                default -> System.out.println("Invalid choice! Please try again.");
+    @FXML
+    void klik(MouseEvent event) {
+        // Ambil input dari TextField
+        String username = Username.getText();
+        String email = Email.getText();
+        String password = Pass.getText();
+
+        // Validasi data login
+        boolean isValidUser = userDAO.validateUser(username, email, password);
+
+        if (isValidUser) {
+            // Jika valid, buka Main.fxml
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/path/to/Main.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) rootPane.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Error", "Unable to load the main page.");
             }
+        } else {
+            // Jika invalid, tampilkan pesan
+            showAlert("Login Failed", "Invalid Username/Email/Password");
         }
     }
 
-    private UserModel login() {
-        String email = view.getEmail();
-        String password = view.getPassword();
-        UserModel user = userDAO.loginUser(email, password);
-        if (user != null) {
-            view.showLoginSuccess();
-            return user; 
-        } else {
-            view.showLoginFailure();
-            return null; 
-        }
+    @FXML
+    void Register(MouseEvent event) {
+        showAlert("Register", "Fitur pendaftaran belum diimplementasikan.");
     }
 
-    private void register() {
-        UserModel newUser = new UserModel();
-        newUser.setNamaUser(view.getNama());
-        newUser.setEmailUser(view.getEmail());
-        newUser.setPasswordUser(view.getPassword());
-        newUser.setNomorHp(view.getNomorHp());
-        newUser.setRole(view.getRole());
-
-        boolean success = userDAO.registerUser(newUser);
-        if (success) {
-            view.showRegistrationSuccess();
-        } else {
-            view.showRegistrationFailure();
-        }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
