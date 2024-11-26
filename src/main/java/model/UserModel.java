@@ -2,12 +2,11 @@ package model;
 
 public class UserModel {
     private int idUser;
-    private String passwordUser;
-    private String namaUser;
+    private String password;
+    private String username;
     private String emailUser;
     private String nomorHp;
     private String role;
-
     public int getIdUser() {
         return idUser;
     }
@@ -16,20 +15,20 @@ public class UserModel {
         this.idUser = idUser;
     }
 
-    public String getPasswordUser() {
-        return passwordUser;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordUser(String passwordUser) {
-        this.passwordUser = passwordUser;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getNamaUser() {
-        return namaUser;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNamaUser(String namaUser) {
-        this.namaUser = namaUser;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmailUser() {
@@ -56,3 +55,6 @@ public class UserModel {
         this.role = role;
     }
 }
+    
+
+   
