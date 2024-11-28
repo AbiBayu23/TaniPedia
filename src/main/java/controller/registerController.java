@@ -38,6 +38,7 @@ public class registerController implements Initializable {
     private TextField HP;
     @FXML
     private TextField Pass;
+    
     private UserDAO userDAO;
 
     /**
@@ -45,7 +46,7 @@ public class registerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        this.userDAO = new UserDAO();
     }    
 
     @FXML
@@ -63,24 +64,25 @@ public class registerController implements Initializable {
 
     // Simpan data pengguna melalui DAO
     try {
-        boolean isRegistered = userDAO.registerUser(username,  password, nomorHp);
+        boolean isRegistered = userDAO.registerUser(username,  nomorHp, password);
 
         if (isRegistered) {
             // Jika berhasil, tampilkan pesan sukses dan buka halaman login
             showAlert(Alert.AlertType.INFORMATION, "Success", "Registration successful!");
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
-                Parent root = loader.load();
-                Stage stage = (Stage) Register.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
+            URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
+            Parent root = FXMLLoader.load(url);
+            Stage stage = (Stage) Login.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
                 showAlert(Alert.AlertType.ERROR, "Error", "Unable to load the login page.");
             }
         } else {
             // Jika gagal menyimpan data (misalnya, email sudah terdaftar)
-            showAlert(Alert.AlertType.ERROR, "Registration Failed", "Email or username already exists!");
+            showAlert(Alert.AlertType.ERROR, "Registration Failed", "nomor HP or username already exists!");
         }
     } catch (Exception e) {
         e.printStackTrace();
