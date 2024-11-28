@@ -4,16 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.UserModel;
 
 public class UserDAO {
-    public boolean registerUser(String username, String password, String nomorHp) {
+    public boolean registerUser(String username, String nomorHp, String password ) {
         try (Connection con = BaseDAO.getCon()) {
-            String query = "INSERT INTO user (username, password,  nomor_hp) VALUES (?, ?, ?,)";
+            String query = "INSERT INTO user (username, nomor_hp, password) VALUES (?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, username);
-            ps.setString(2, password);
-            ps.setString(3, nomorHp);
+            ps.setString(2, nomorHp);
+            ps.setString(3, password);
+            
 
             int result = ps.executeUpdate();
             return result > 0;
@@ -23,7 +23,7 @@ public class UserDAO {
         return false;
     }
     public boolean validateUser(String username, String password) {
-        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+        String query = "SELECT * FROM user WHERE username = ? AND password = ?";
         Connection con = null;
 
         try {
