@@ -12,10 +12,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL url = new File("src/main/java/view/Main.fxml").toURI().toURL();
+        URL url = new File("src/main/java/view/Login.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Login Application");
+        primaryStage.setTitle("TaniPedia");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
