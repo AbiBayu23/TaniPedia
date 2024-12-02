@@ -1,73 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.Avatar?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #EEEED4;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
    <children>
-    <AnchorPane layoutX="-1.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #68A971;">
+      <ImageView fitHeight="17.0" fitWidth="145.0" layoutX="26.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../gambar-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutY="334.0" prefHeight="66.0" prefWidth="600.0" style="-fx-background-color: #68A971;">
          <children>
-          <AnchorPane layoutX="280.0" layoutY="-8.0" minHeight="0.0" minWidth="0.0" prefHeight="407.0" prefWidth="326.0" style="-fx-background-color: #EEEED4;">
-               <children>
-                  <Button fx:id="Login" layoutX="146.0" layoutY="261.0" mnemonicParsing="false" onMouseClicked="#klik" style="-fx-background-color: #FDB58E;" text="Login" />
-                  <TextField fx:id="Username" layoutX="114.0" layoutY="147.0">
-                     <font>
-                        <Font name="Cambria" size="12.0" />
-                     </font>
-                  </TextField>
-                  <Label layoutX="33.0" layoutY="183.0" text="Email">
-                     <font>
-                        <Font name="Cambria" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="185.0" layoutY="297.0" onMouseClicked="#Register" text="Daftar sekarang" textFill="#3c74ce">
-                     <font>
-                        <Font name="Cambria" size="11.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="89.0" layoutY="297.0" text="Belum punya akun?">
-                     <font>
-                        <Font name="Cambria" size="11.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="32.0" layoutY="151.0" text="Username">
-                     <font>
-                        <Font name="Cambria" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="32.0" layoutY="219.0" text="Password">
-                     <font>
-                        <Font name="Cambria" size="13.0" />
-                     </font>
-                  </Label>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="63.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../gambar-removebg-preview.png" />
-                     </image>
-                  </ImageView>
-                  <TextField fx:id="Email" layoutX="114.0" layoutY="180.0">
-                     <font>
-                        <Font name="Cambria" size="12.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="Pass" layoutX="113.0" layoutY="216.0">
-                     <font>
-                        <Font name="Cambria" size="12.0" />
-                     </font>
-                  </TextField>
-               </children>
-            </AnchorPane>
-            <ImageView fitHeight="407.0" fitWidth="285.0" layoutX="-5.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../Poster%20Dukung%20Petani%20Lokal%20Kreatif%20Berwarna%20Biru%20Dan%20Hijau.jpg" />
-               </image>
-            </ImageView>
+            
+            <Text fill="#eeeed4" layoutX="100.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Alamat">
+               <font>
+                  <Font size="10.0" />
+               </font></Text>
+            <Text layoutX="285.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email">
+               <fill>
+                  
+               </fill>
+               <font>
+                  <Font name="Cambria" size="10.0" />
+               </font></Text>
+            <Text fill="#eeeed4" layoutX="439.0" layoutY="15.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telepon">
+               <font>
+                  <Font name="Cambria" size="10.0" />
+               </font></Text>
+            <Text fill="#eeeed4" layoutX="27.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jl. Veteran No.8, Nagri Kaler, Kec. Purwakarta, &#10;Kabupaten Purwakarta,&#10;Jawa Barat 41115" textAlignment="CENTER">
+               <font>
+                  <Font name="Cambria" size="9.0" />
+               </font>
+            </Text>
+            <Text fill="#eeeed4" layoutX="253.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tanipedia@gmail.com">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fill="#eeeed4" layoutX="415.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(+62)888-9681-2991">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
+      
+      <Label layoutX="26.0" layoutY="94.0" prefWidth="214.0" text="Halo, Sahabat Tani!">
+         <font>
+            <Font name="Cambria Bold" size="24.0" />
+         </font>
+      </Label>
+      <Text layoutX="26.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tanipedia lahir dari kebutuhan akan sumber informasi yang terpercaya dan mudah diakses oleh petani dan penggiat agrikultur. Dengan berbagai fitur seperti ensiklopedia tanaman, e-commerce agribisnis, dan tips pertanian. Kami berkomitmen membantu Anda sukses." textAlignment="JUSTIFY" wrappingWidth="214.4000000000001">
+         <font>
+            <Font name="Cambria" size="12.0" />
+         </font></Text>
+      <ImageView fitHeight="256.0" fitWidth="308.0" layoutX="275.0" layoutY="71.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../WhatsApp_Image_2024-11-28_at_12.38.26_e49837ff-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="Home" layoutX="293.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: #EEEED4;" text="Home">
+         <font>
+            <Font name="Cambria" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="Ensiklopedia" layoutX="334.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: #EEEED4;" text="Ensiklopedia">
+         <font>
+            <Font name="Cambria" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="Kamus" layoutX="417.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: #EEEED4;" text="Kamus">
+         <font>
+            <Font name="Cambria" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="Belanja" layoutX="469.0" layoutY="12.0" mnemonicParsing="false" style="-fx-background-color: #EEEED4;" text="Belanja">
+         <font>
+            <Font name="Cambria" size="12.0" />
+         </font>
+      </Button>
+      <Avatar layoutX="532.0" layoutY="8.0" radius="15.0" />
    </children>
 </AnchorPane>
