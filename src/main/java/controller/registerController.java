@@ -70,7 +70,7 @@ public class registerController implements Initializable {
             // Jika berhasil, tampilkan pesan sukses dan buka halaman login
             showAlert(Alert.AlertType.INFORMATION, "Success", "Registration successful!");
             try {
-            URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
+            URL url = new File("src/main/java/view/Login.fxml").toURI().toURL();
             Parent root = FXMLLoader.load(url);
             Stage stage = (Stage) Login.getScene().getWindow();
             Scene scene = new Scene(root);
@@ -93,7 +93,7 @@ public class registerController implements Initializable {
 
     public void backLogin(MouseEvent event) {
     try {
-        URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
+        URL url = new File("src/main/java/view/Login.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
         Stage stage = (Stage) Login.getScene().getWindow();
         Scene scene = new Scene(root);
