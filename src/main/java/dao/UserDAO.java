@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.UserModel;
 
 public class UserDAO {
     public boolean registerUser(String username, String nomorHp, String password ) {
@@ -22,26 +23,35 @@ public class UserDAO {
         }
         return false;
     }
-    public boolean validateUser(String username, String password) {
-        String query = "SELECT * FROM user WHERE username = ? AND password = ?";
-        Connection con = null;
+    public UserModel getUser(String username, String password) {
+    String query = "SELECT * FROM user WHERE username = ? AND password = ?";
+    Connection con = null;
 
-        try {
-            // Mendapatkan koneksi dari BaseDAO
-            con = BaseDAO.getCon();
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
+    try {
+        // Mendapatkan koneksi dari BaseDAO
+        con = BaseDAO.getCon();
+        PreparedStatement stmt = con.prepareStatement(query);
+        stmt.setString(1, username);
+        stmt.setString(2, password);
 
-            // Eksekusi query
-            ResultSet rs = stmt.executeQuery();
-            return rs.next(); // Jika ada hasil, berarti valid
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Tutup koneksi menggunakan BaseDAO
-            BaseDAO.closeCon(con);
+        // Eksekusi query
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            // Jika user ditemukan, buat objek UserModel
+            UserModel user = new UserModel(
+                rs.getString("username"),
+                rs.getString("nomor_hp"),
+                rs.getString("password")
+            );
+            return user;
         }
-        return false;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        // Tutup koneksi menggunakan BaseDAO
+        BaseDAO.closeCon(con);
     }
+    return null; // Return null jika user tidak ditemukan
+}
 }
