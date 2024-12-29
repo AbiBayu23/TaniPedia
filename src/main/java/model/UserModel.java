@@ -2,19 +2,31 @@ package model;
 
 public class UserModel {
 
+    /**
+     *
+     * @param aInt
+     * @param string
+     * @param string1
+     * @param string2
+     */
     public UserModel(int aInt, String string, String string1, String string2) {
     }
     private int idUser;
     private String password;
     private String username;
-    private String emailUser;
     private String nomorHp;
     private String role;
+    private byte[] profilePhoto;
 
-    public UserModel(String username, String nomorHp, String password) {
+
+    
+
+    public UserModel(int idUser, String username, String nomorHp, String password,byte[] profilePhoto) {
+        this.idUser = idUser;
         this.username = username;
         this.nomorHp = nomorHp;
         this.password = password;
+        this.profilePhoto = profilePhoto;
     }
 
     public int getIdUser() {
@@ -41,14 +53,6 @@ public class UserModel {
         this.username = username;
     }
 
-    public String getEmailUser() {
-        return emailUser;
-    }
-
-    public void setEmailUser(String emailUser) {
-        this.emailUser = emailUser;
-    }
-
     public String getNomorHp() {
         return nomorHp;
     }
@@ -63,7 +67,16 @@ public class UserModel {
 
     public void setRole(String role) {
         this.role = role;
+    }   
+    
+    public byte[] getProfilePhoto() {
+        return profilePhoto;
     }
+
+    public void setProfilePhoto(byte[] profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
 }
     
 
