@@ -48,6 +48,8 @@ public class HomeController implements Initializable {
     private Label username;
     @FXML
     private Pane Kamus;
+    @FXML
+    private Label hello;
 
     /**
      * Initializes the controller class.
@@ -108,5 +110,6 @@ public class HomeController implements Initializable {
 
     void setUserModel(UserModel user) {
         username.setText(user.getUsername());
+        hello.setText("Hello, " + user.getUsername()+"!");
     }
 }
