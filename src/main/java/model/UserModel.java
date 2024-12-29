@@ -1,12 +1,22 @@
 package model;
 
 public class UserModel {
+
+    public UserModel(int aInt, String string, String string1, String string2) {
+    }
     private int idUser;
     private String password;
     private String username;
     private String emailUser;
     private String nomorHp;
     private String role;
+
+    public UserModel(String username, String nomorHp, String password) {
+        this.username = username;
+        this.nomorHp = nomorHp;
+        this.password = password;
+    }
+
     public int getIdUser() {
         return idUser;
     }
