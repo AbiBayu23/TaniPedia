@@ -2,13 +2,7 @@ package model;
 
 public class UserModel {
 
-    /**
-     *
-     * @param aInt
-     * @param string
-     * @param string1
-     * @param string2
-     */
+
     public UserModel(int aInt, String string, String string1, String string2) {
     }
     private int idUser;
@@ -21,7 +15,7 @@ public class UserModel {
 
     
 
-    public UserModel(int idUser, String username, String nomorHp, String password,byte[] profilePhoto) {
+    public UserModel(int idUser, String username, String nomorHp, String password, byte[] profilePhoto) {
         this.idUser = idUser;
         this.username = username;
         this.nomorHp = nomorHp;
