@@ -31,9 +31,9 @@ import model.UserModel;
  * @author abiba
  */
 public class HomeController implements Initializable {
-    
-    private UserModel UserModel;
-
+    @FXML
+    private UserModel userModel;
+    @FXML
     private ImageView Logout;
     @FXML
     private Button btnOverview;
@@ -69,6 +69,13 @@ public class HomeController implements Initializable {
         // Set default pane to show
         showPane(Home);
     }
+    public HomeController() {
+        // Inisialisasi UserDAO
+        this.userDAO = new UserDAO();
+    }
+    
+    
+   
     
     private byte[] readFileToByteArray(File file) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
@@ -81,8 +88,7 @@ public class HomeController implements Initializable {
 
     @FXML
     private void getProfil(MouseEvent event) throws IOException, SQLException {
-    // Retrieve the userId from the UserModel (assuming user.getId() returns the correct user ID)
-    int userId = UserModel.getIdUser();
+        int userId = userModel.getIdUser();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image");
         fileChooser.getExtensionFilters().addAll(
@@ -94,8 +100,7 @@ public class HomeController implements Initializable {
             // Optional: Display the selected image in the ImageView
             Image image = new Image(selectedFile.toURI().toString());
             profil.setImage(image);
-            
-            UserDAO.insertEntry(userId, this.readFileToByteArray(selectedFile));
+                UserDAO.insertEntry(userId, this.readFileToByteArray(selectedFile));
         }
     }
 
@@ -146,8 +151,13 @@ public class HomeController implements Initializable {
     }
     
     void setUserModel(UserModel user) {
+        if (user == null) {
+        throw new IllegalArgumentException("UserModel cannot be null");
+        }
+
+        this.userModel = user;
         username.setText(user.getUsername());
-        hello.setText("Hello, " + user.getUsername()+"!");
+        hello.setText("Hello, " + user.getUsername() + "!");
         if (user.getProfilePhoto() != null) {
             Image foto = new Image(new ByteArrayInputStream(user.getProfilePhoto()));
             profil.setImage(foto);
