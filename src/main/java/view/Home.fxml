@@ -104,16 +104,23 @@
       </VBox>
       <StackPane layoutX="200.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #EEEED4;">
          <children>
-            <Pane fx:id="Belanja" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" visible="false">
+            <Pane fx:id="Belanja" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;">
                <children>
-                  <AnchorPane prefHeight="39.0" prefWidth="400.0" style="-fx-background-color: #68A971; -fx-border-color: #000000;" />
-                  <Label layoutX="12.0" prefHeight="35.0" prefWidth="151.0" text="E-Commerce" textFill="#fafafa">
-                     <font>
-                        <Font name="Cambria Bold" size="24.0" />
-                     </font>
-                  </Label>
+                  <AnchorPane prefHeight="39.0" prefWidth="400.0" style="-fx-background-color: #68A971; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fitHeight="33.0" fitWidth="138.0" layoutX="248.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Icon/gambar-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="14.0" layoutY="2.0" prefHeight="35.0" prefWidth="151.0" text="E-Commerce" textFill="#fafafa">
+                           <font>
+                              <Font name="Cambria Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
                </children></Pane>
-            <Pane fx:id="Ensiklopedia" prefHeight="376.0" prefWidth="400.0" style="-fx-border-color: #000000;" visible="false">
+            <Pane fx:id="Ensiklopedia" prefHeight="376.0" prefWidth="400.0" style="-fx-border-color: #000000;">
                <children>
                   <TextField layoutX="171.0" layoutY="47.0" prefHeight="26.0" prefWidth="189.0" promptText="search" style="-fx-background-color: #EEEED4; -fx-border-color: #000000; -fx-border-radius: 2em;" text="Search" />
                   <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="343.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
@@ -128,6 +135,11 @@
                               <Font name="Cambria Bold" size="24.0" />
                            </font>
                         </Label>
+                        <ImageView fitHeight="33.0" fitWidth="138.0" layoutX="248.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Icon/gambar-removebg-preview.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                   <ImageView fitHeight="39.0" fitWidth="33.0" layoutX="343.0" layoutY="353.0" pickOnBounds="true" preserveRatio="true">
@@ -165,17 +177,29 @@
                               <Font name="Cambria Bold" size="24.0" />
                            </font>
                         </Label>
+                        <ImageView fitHeight="33.0" fitWidth="138.0" layoutX="248.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Icon/gambar-removebg-preview.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                </children></Pane>
-            <Pane fx:id="Kamus" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;">
+            <Pane fx:id="Kamus" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" visible="false">
                <children>
-                  <AnchorPane prefHeight="39.0" prefWidth="400.0" style="-fx-background-color: #68A971; -fx-border-color: #000000;" />
-                  <Label layoutX="12.0" prefHeight="35.0" prefWidth="151.0" text="Dictionary" textFill="WHITE">
-                     <font>
-                        <Font name="Cambria Bold" size="24.0" />
-                     </font>
-                  </Label>
+                  <AnchorPane prefHeight="39.0" prefWidth="400.0" style="-fx-background-color: #68A971; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fitHeight="33.0" fitWidth="138.0" layoutX="248.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Icon/gambar-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="14.0" layoutY="2.0" prefHeight="35.0" prefWidth="151.0" text="Dictionary" textFill="WHITE">
+                           <font>
+                              <Font name="Cambria Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
                   <TextField layoutX="102.0" layoutY="49.0" prefHeight="26.0" prefWidth="196.0" promptText="search" style="-fx-background-color: #EEEED4; -fx-border-color: #000000; -fx-border-radius: 2em;" text="Search" />
                   <ImageView fitHeight="39.0" fitWidth="33.0" layoutX="346.0" layoutY="346.0" pickOnBounds="true" preserveRatio="true">
                      <image>
