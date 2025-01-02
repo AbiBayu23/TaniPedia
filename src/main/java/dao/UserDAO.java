@@ -12,7 +12,26 @@ import model.UserModel;
 
 
 public class UserDAO {
+    
+    public boolean validateUser(String username, String password) {
+        try (Connection con = BaseDAO.getCon()) {
+            String query = "SELECT COUNT(*) FROM user WHERE username = ? AND password = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, username);
+            ps.setString(2, password);
 
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0; 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    
     public boolean registerUser(String username, String nomorHp, String password ) {
         try (Connection con = BaseDAO.getCon()) {
             String query = "INSERT INTO user (username, nomor_hp, password) VALUES (?, ?, ?)";
@@ -29,6 +48,7 @@ public class UserDAO {
         }
         return false;
     }
+    
     public UserModel getUser(String username, String password) {
     String query = "SELECT * FROM user WHERE username = ? AND password = ?";
     Connection con = null;

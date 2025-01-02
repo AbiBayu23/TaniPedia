@@ -8,15 +8,16 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
    <children>
     <AnchorPane layoutX="-1.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #68A971;">
          <children>
-          <AnchorPane layoutX="280.0" layoutY="-8.0" minHeight="0.0" minWidth="0.0" prefHeight="407.0" prefWidth="326.0" style="-fx-background-color: #EEEED4; -fx-border-color: #000000;">
+          <AnchorPane layoutX="280.0" layoutY="-5.0" minHeight="0.0" minWidth="0.0" prefHeight="407.0" prefWidth="326.0" style="-fx-background-color: #EEEED4; -fx-border-color: #000000;">
                <children>
                   <Button fx:id="Login" layoutX="150.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#klik" style="-fx-background-color: #FDB58E; -fx-border-color: #000000;" text="Login" />
-                  <TextField fx:id="Username" layoutX="113.0" layoutY="149.0" prefHeight="24.0" prefWidth="170.0" promptText="Masukkan Username" style="-fx-border-color: #000000;">
+                  <TextField fx:id="Username" layoutX="113.0" layoutY="149.0" prefHeight="26.0" prefWidth="140.0" promptText="Masukkan Username" style="-fx-border-color: #000000;">
                      <font>
                         <Font name="Cambria" size="12.0" />
                      </font>
@@ -53,6 +54,7 @@
                         <Button layoutX="140.0" mnemonicParsing="false" onAction="#togglePasswordVisibility" style="-fx-background-color: #EEEED4;" text="👁" />
                      </children>
                   </AnchorPane>
+                  <Text fx:id="wrongUser" fill="RED" layoutX="111.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username / Password salah" visible="false" />
                   </children>
             </AnchorPane>
             <ImageView fitHeight="407.0" fitWidth="285.0" layoutX="-5.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">

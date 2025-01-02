@@ -15,6 +15,7 @@ public class Main extends Application {
         URL url = new File("src/main/java/view/Login.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
         Scene scene = new Scene(root);
+        primaryStage.setResizable(false);
         primaryStage.setTitle("TaniPedia");
         primaryStage.setScene(scene);
         primaryStage.show();

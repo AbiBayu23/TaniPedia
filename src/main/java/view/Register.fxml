@@ -8,14 +8,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.registerController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.registerController">
    <children>
       <AnchorPane layoutX="-1.0" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #68A971;">
          <children>
             <AnchorPane layoutX="280.0" layoutY="-8.0" minHeight="0.0" minWidth="0.0" prefHeight="407.0" prefWidth="326.0" style="-fx-background-color: #EEEED4; -fx-border-color: #000000;">
                <children>
-                  <Button fx:id="Register" layoutX="146.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#handleRegister" style="-fx-background-color: #FDB58E; -fx-border-color: #000000;" text="Register" />
+                  <Button fx:id="Register" layoutX="168.0" layoutY="265.0" mnemonicParsing="false" onMouseClicked="#handleRegister" style="-fx-background-color: #FDB58E; -fx-border-color: #000000;" text="Register" />
                   
                   <TextField fx:id="Username" layoutX="113.0" layoutY="133.0" prefHeight="24.0" prefWidth="170.0" promptText="Masukkan username" style="-fx-border-color: #000000;">
                      <font>
@@ -23,13 +24,13 @@
                      </font>
                   </TextField>
 
-                  <Label fx:id="Login" layoutX="185.0" layoutY="297.0" onMouseClicked="#backLogin" text="Login disini" textFill="#3c74ce">
+                  <Label fx:id="Login" layoutX="207.0" layoutY="308.0" onMouseClicked="#backLogin" text="Login disini" textFill="#3c74ce">
                      <font>
                         <Font name="Cambria" size="11.0" />
                      </font>
                   </Label>
 
-                  <Label layoutX="89.0" layoutY="297.0" text="Belum punya akun?">
+                  <Label layoutX="113.0" layoutY="308.0" text="Sudah punya akun?">
                      <font>
                         <Font name="Cambria" size="11.0" />
                      </font>
@@ -64,14 +65,10 @@
                         <Font name="Cambria" size="13.0" />
                      </font>
                   </Label>
-
-                  <AnchorPane layoutX="115.0" layoutY="211.0" prefHeight="40.0" prefWidth="180.0">
-                     <children>
-                        <PasswordField fx:id="passwordField" prefWidth="140.0" promptText="Masukkan Password" style="-fx-border-color: #000000;" />
-                        <TextField fx:id="textField" layoutX="0.0" layoutY="0.0" prefWidth="140.0" promptText="Masukkan Password" visible="false" />
-                        <Button layoutX="140.0" mnemonicParsing="false" onAction="#togglePasswordVisibility" style="-fx-background-color: #EEEED4;" text="👁" />
-                     </children>
-                  </AnchorPane>
+                  <PasswordField fx:id="passwordField" layoutX="113.0" layoutY="208.0" prefHeight="27.0" prefWidth="170.0" promptText="Masukkan Password" style="-fx-border-color: #000000;" />
+                  <TextField fx:id="textField" layoutX="113.0" layoutY="208.0" prefHeight="26.0" prefWidth="170.0" promptText="Masukkan Password" style="-fx-border-color: #000000;" visible="false" />
+                  <Text fx:id="fill" fill="RED" layoutX="97.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username / Password minimal 8 huruf" visible="false" />
+                  <Button layoutX="283.0" layoutY="209.0" mnemonicParsing="false" onAction="#togglePasswordVisibility" style="-fx-background-color: #EEEED4;" text="👁" />
                </children>
             </AnchorPane>
 

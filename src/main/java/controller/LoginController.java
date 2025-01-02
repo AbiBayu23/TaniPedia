@@ -17,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.text.Text;
 
 public class LoginController {
 
@@ -64,20 +65,18 @@ public class LoginController {
 
     @FXML
     void klik(MouseEvent event) {
-        // Ambil input dari TextField
         String username = Username.getText();
         String password = passwordField.isVisible() ? passwordField.getText() : textField.getText();
 
-        // Validasi data login
         boolean isValidUser = userDAO.validateUser(username, password);
 
         if (isValidUser) {
-            // Jika valid, buka Main.fxml
             try {
                 URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
                 Parent root = FXMLLoader.load(url);
                 Stage stage = (Stage) Login.getScene().getWindow();
                 Scene scene = new Scene(root);
+                stage.setResizable(false);
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
@@ -85,10 +84,15 @@ public class LoginController {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unable to load the main page.");
             }
         } else {
-            // Jika invalid, tampilkan pesan
-            showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid Username/Email/Password");
+            Text wrongUserText = (Text) Login.getScene().lookup("#wrongUser");
+            if (wrongUserText != null) {
+                wrongUserText.setVisible(true); 
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid Username/Email/Password");
+            }
         }
     }
+
 
     public void handleRegister(MouseEvent event) {
         try {

@@ -15,7 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -37,6 +39,8 @@ public class registerController implements Initializable {
     private PasswordField passwordField;
     @FXML
     private TextField textField;
+    @FXML
+    private Text fill;
     
     private UserDAO userDAO;
     
@@ -45,6 +49,13 @@ public class registerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.userDAO = new UserDAO();
+        
+        setMaxLengthAndPattern(Username, 16, "[a-zA-Z0-9]*");
+        setMaxLengthAndPattern(passwordField, 16, "[a-zA-Z0-9]*");
+        setMaxLengthAndPattern(textField, 16, "[a-zA-Z0-9]*");
+        setMaxLengthAndPattern(HP, 13, "\\d*");
+        
+        fill.setVisible(false);
     }
 
     @FXML
@@ -68,17 +79,22 @@ public class registerController implements Initializable {
         String nomorHp = HP.getText();
         String password = passwordField.getText();
 
+        if (username.length() < 8 || password.length() < 8 || nomorHp.length() < 12) {
+            fill.setVisible(true);
+            return;
+        } else {
+            fill.setVisible(false);
+        }
+
         if (username.isEmpty() || nomorHp.isEmpty() || password.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Registration Failed", "All fields must be filled!");
             return;
         }
 
-        // Simpan data pengguna melalui DAO
         try {
             boolean isRegistered = userDAO.registerUser(username, nomorHp, password);
 
             if (isRegistered) {
-                // Jika berhasil, tampilkan pesan sukses dan buka halaman login
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Registration successful!");
                 try {
                     URL url = new File("src/main/java/view/Login.fxml").toURI().toURL();
@@ -92,7 +108,6 @@ public class registerController implements Initializable {
                     showAlert(Alert.AlertType.ERROR, "Error", "Unable to load the login page.");
                 }
             } else {
-                // Jika gagal menyimpan data (misalnya, nomor HP atau username sudah terdaftar)
                 showAlert(Alert.AlertType.ERROR, "Registration Failed", "Nomor HP or username already exists!");
             }
         } catch (Exception e) {
@@ -108,6 +123,7 @@ public class registerController implements Initializable {
             Parent root = FXMLLoader.load(url);
             Stage stage = (Stage) Login.getScene().getWindow();
             Scene scene = new Scene(root);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
@@ -123,4 +139,17 @@ public class registerController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    
+    private void setMaxLengthAndPattern(TextField textField, int maxLength, String pattern) {
+        textField.setTextFormatter(new TextFormatter<>(change -> {
+            if (change.getControlNewText().length() > maxLength) {
+                return null;
+            }
+            if (!change.getControlNewText().matches(pattern)) {
+                return null; 
+            }
+            return change;
+        }));
+    }
 }
+
