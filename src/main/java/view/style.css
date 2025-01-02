@@ -12,7 +12,7 @@
 }
 
 .scroll-pane {
-    -fx-background-color: #02030A;
+    -fx-background-color: white;
 }
 
 .scroll-bar:horizontal, .scroll-bar:vertical{
