@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.text.Text;
+import model.UserModel;
 
 public class LoginController {
 
@@ -68,16 +69,21 @@ public class LoginController {
         String username = Username.getText();
         String password = passwordField.isVisible() ? passwordField.getText() : textField.getText();
 
-        boolean isValidUser = userDAO.validateUser(username, password);
+        UserModel user = userDAO.getUser(username, password);
 
-        if (isValidUser) {
+        if (user != null) {
             try {
-                URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
-                Parent root = FXMLLoader.load(url);
+                 URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
+                FXMLLoader loader = new FXMLLoader(url);
+
+                Parent root = loader.load();
+
+                // Dapatkan controller Home untuk set data user
+                HomeController homeController = loader.getController();
+                homeController.setUserModel(user);
+
                 Stage stage = (Stage) Login.getScene().getWindow();
-                Scene scene = new Scene(root);
-                stage.setResizable(false);
-                stage.setScene(scene);
+                stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
