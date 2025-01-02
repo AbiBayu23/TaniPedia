@@ -31,10 +31,7 @@ import model.UserModel;
  * @author abiba
  */
 public class HomeController implements Initializable {
-    @FXML
     private UserModel userModel;
-    @FXML
-    private ImageView Logout;
     @FXML
     private Button btnOverview;
     @FXML
@@ -57,10 +54,14 @@ public class HomeController implements Initializable {
     private Pane Kamus;
     @FXML
     private Label hello;
-    
+    @FXML
     private UserDAO userDAO;
     @FXML
     private ImageView profil;
+    @FXML
+    private ImageView addEnsiklopedia;
+    @FXML
+    private Pane formEnsiklopedia;
     /**
      * Initializes the controller class.
      */
@@ -97,6 +98,7 @@ public class HomeController implements Initializable {
 
         File selectedFile = fileChooser.showOpenDialog(username.getScene().getWindow());
                 if (selectedFile != null) {
+            // Optional: Display the selected image in the ImageView
             Image image = new Image(selectedFile.toURI().toString());
             profil.setImage(image);
                 UserDAO.insertEntry(userId, this.readFileToByteArray(selectedFile));
@@ -110,7 +112,6 @@ public class HomeController implements Initializable {
             Parent root = FXMLLoader.load(url);
             Stage stage = (Stage) btnSignout.getScene().getWindow();
             Scene scene = new Scene(root);
-            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
 
@@ -139,6 +140,10 @@ public class HomeController implements Initializable {
     private void showMenus(MouseEvent event) {
         showPane(Kamus);
     }
+    @FXML
+    private void showPengisian(MouseEvent event) {
+        showPane(formEnsiklopedia);
+    }
 
 
     private void showPane(Pane paneToShow) {
@@ -146,6 +151,7 @@ public class HomeController implements Initializable {
         Belanja.setVisible(false);
         Ensiklopedia.setVisible(false);
         Kamus.setVisible(false);
+        formEnsiklopedia.setVisible(false);
 
         paneToShow.setVisible(true);
     }
@@ -163,5 +169,7 @@ public class HomeController implements Initializable {
             profil.setImage(foto);
         }
     }
+
+    
 
 }
