@@ -13,22 +13,19 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #68a971; -fx-border-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="pane" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #68a971; -fx-border-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fx:id="profil" fitHeight="90.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../image/jimmy-fallon.png" />
-               </image>
-               <VBox.margin>
-                  <Insets bottom="10.0" top="50.0" />
-               </VBox.margin></ImageView>
-            <Label fx:id="username" onMouseClicked="#getProfil" text="Username" textFill="#fcfcfc">
+            <AnchorPane fx:id="profilPane" prefHeight="156.0" prefWidth="162.0">
+               <children>
+                  <ImageView fx:id="fotoProfil" fitHeight="94.0" fitWidth="90.0" layoutX="54.0" layoutY="31.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="30.19999999999999" AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="54.0" AnchorPane.topAnchor="30.399999999999977" />
+               </children>
+            </AnchorPane>
+            <Label fx:id="username" onMouseClicked="#showProfil" text="Username" textFill="#fcfcfc">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
@@ -36,7 +33,7 @@
                   <Font name="Cambria" size="16.0" />
                </font>
             </Label>
-            <Button fx:id="btnOverview" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#showOverview" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Home" textFill="WHITE">
+            <Button fx:id="btnOverview" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#showOverview" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Beranda" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -66,7 +63,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#showPackages" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="E-Commerce" textFill="WHITE">
+            <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#showPackages" prefHeight="42.0" prefWidth="200.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Pusat Belanja" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -78,7 +75,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnMenus" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#showMenus" prefHeight="39.0" prefWidth="200.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Dictionary" textFill="WHITE">
+            <Button fx:id="btnMenus" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#showMenus" prefHeight="39.0" prefWidth="200.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Kamus" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -90,7 +87,7 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnSignout" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#Logout" prefHeight="42.0" prefWidth="198.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Sign Out" textFill="WHITE">
+            <Button fx:id="btnSignout" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onMouseClicked="#Logout" prefHeight="42.0" prefWidth="198.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Keluar Akun" textFill="WHITE">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -122,11 +119,16 @@
                         </Label>
                      </children></AnchorPane>
                </children></Pane>
-            <Pane fx:id="Ensiklopedia" prefHeight="376.0" prefWidth="400.0" style="-fx-border-color: #000000;">
+            <Pane fx:id="Ensiklopedia" prefHeight="376.0" prefWidth="400.0" style="-fx-border-color: #000000;" visible="false">
                <children>
-                  <AnchorPane prefHeight="400.0" prefWidth="400.0" style="-fx-border-color: #000000; -fx-background-color: #EEEED4;">
+                  <TextField layoutX="29.0" layoutY="47.0" prefHeight="27.0" prefWidth="347.0" promptText="search" style="-fx-background-color: #EEEED4; -fx-border-color: #000000; -fx-border-radius: 2em;" text="Search" />
+                  <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="335.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Icon/search.png" />
+                     </image>
+                  </ImageView>
+                  <AnchorPane prefHeight="39.0" prefWidth="400.0" style="-fx-background-color: #68A971; -fx-border-color: #000000;">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="42.0" layoutX="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.2" style="-fx-fill: #68A971;" width="400.0" />
                         <Label layoutX="14.0" layoutY="4.0" text="Ensiklopedia" textFill="WHITE">
                            <font>
                               <Font name="Cambria Bold" size="24.0" />
@@ -137,46 +139,17 @@
                               <Image url="@../Icon/gambar-removebg-preview.png" />
                            </image>
                         </ImageView>
-                        <TextField layoutX="27.0" layoutY="55.0" prefHeight="27.0" prefWidth="347.0" promptText="search" style="-fx-background-color: #EEEED4; -fx-border-color: #000000; -fx-border-radius: 2em;" text="Search" />
-                        <ImageView fx:id="addEnsiklopedia" fitHeight="39.0" fitWidth="33.0" layoutX="358.0" layoutY="353.0" onMouseClicked="#showPengisian" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Icon/plus.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="342.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Icon/search.png" />
-                           </image>
-                        </ImageView>
                      </children>
                   </AnchorPane>
-                  <ScrollPane fx:id="formEnsiklopedia" prefHeight="400.0" prefWidth="400.0" visible="false">
-                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="536.0" prefWidth="388.0" style="-fx-background-color: #EEEED4;">
-                           <children>
-                              <Button layoutX="246.0" layoutY="466.0" mnemonicParsing="false" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Confirm" textFill="WHITE" />
-                              <Button layoutX="317.0" layoutY="466.0" mnemonicParsing="false" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Cancel" textFill="#fffbfb" />
-                              <TextField layoutX="111.0" layoutY="418.0" prefHeight="27.0" prefWidth="258.0" style="-fx-border-color: #000000;" />
-                              <Text layoutX="14.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image" wrappingWidth="98.0" />
-                              <TextArea layoutX="112.0" layoutY="276.0" prefHeight="132.0" prefWidth="257.0" style="-fx-border-color: #000000;">
-                                 <font>
-                                    <Font name="Cambria" size="12.0" />
-                                 </font>
-                              </TextArea>
-                              <Text layoutX="14.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cultivation Guide" wrappingWidth="109.20001220703125" />
-                              <TextArea layoutX="111.0" layoutY="96.0" prefHeight="167.0" prefWidth="260.0" style="-fx-border-color: #000000;">
-                                 <font>
-                                    <Font name="Cambria" size="12.0" />
-                                 </font>
-                              </TextArea>
-                              <Text layoutX="14.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pest/Disease Management" wrappingWidth="98.0" />
-                              <TextField layoutX="112.0" layoutY="59.0" prefHeight="27.0" prefWidth="260.0" style="-fx-border-color: #000000;" />
-                              <Text layoutX="14.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Plants" wrappingWidth="98.0" />
-                              <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Plants" wrappingWidth="98.0" />
-                              <TextField layoutX="112.0" layoutY="20.0" prefHeight="27.0" prefWidth="259.0" style="-fx-border-color: #000000;" />
-                           </children>
-                        </AnchorPane>
-                     </content>
+                  <ImageView fx:id="addEnsiklopedia" fitHeight="39.0" fitWidth="33.0" layoutX="343.0" layoutY="353.0" onMouseClicked="#showPengisian" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Icon/plus.png" />
+                     </image>
+                  </ImageView>
+                  <ScrollPane layoutX="27.0" layoutY="85.0" prefHeight="263.0" prefWidth="347.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="350.0" />
+                    </content>
                   </ScrollPane>
                </children>
             </Pane>
@@ -270,6 +243,142 @@
                   <Text layoutX="14.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cultivation Guide" wrappingWidth="109.20001220703125" />
                   <Text layoutX="14.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image" wrappingWidth="98.0" />
                   <TextField layoutX="126.0" layoutY="315.0" prefHeight="25.0" prefWidth="250.0" style="-fx-border-color: #000000;" />
+               </children>
+            </Pane>
+            <Pane fx:id="formEnsiklopedia" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <AnchorPane prefHeight="39.0" prefWidth="400.0" style="-fx-background-color: #68A971; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fitHeight="33.0" fitWidth="138.0" layoutX="248.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Icon/gambar-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="14.0" layoutY="2.0" prefHeight="35.0" prefWidth="222.0" text="Form Ensiklopedia" textFill="WHITE">
+                           <font>
+                              <Font name="Cambria Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <ScrollPane layoutY="39.0" prefHeight="363.0" prefWidth="400.0" style="-fx-background-color: #EEEED4;">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="508.0" prefWidth="388.0" style="-fx-background-color: #EEEED4;">
+                           <children>
+                              <Button layoutX="246.0" layoutY="466.0" mnemonicParsing="false" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Confirm" textFill="WHITE" />
+                              <Button layoutX="317.0" layoutY="466.0" mnemonicParsing="false" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Cancel" textFill="#fffbfb" />
+                              <TextField layoutX="111.0" layoutY="418.0" prefHeight="27.0" prefWidth="258.0" style="-fx-border-color: #000000;" />
+                              <Text layoutX="14.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image" wrappingWidth="98.0" />
+                              <TextArea layoutX="112.0" layoutY="276.0" prefHeight="132.0" prefWidth="257.0" style="-fx-border-color: #000000;">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </TextArea>
+                              <Text layoutX="14.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cultivation Guide" wrappingWidth="109.20001220703125" />
+                              <TextArea layoutX="111.0" layoutY="96.0" prefHeight="167.0" prefWidth="260.0" style="-fx-border-color: #000000;">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </TextArea>
+                              <Text layoutX="14.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pest/Disease Management" wrappingWidth="98.0" />
+                              <TextField layoutX="112.0" layoutY="59.0" prefHeight="27.0" prefWidth="260.0" style="-fx-border-color: #000000;" />
+                              <Text layoutX="14.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Plants" wrappingWidth="98.0" />
+                              <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name of Plants" wrappingWidth="98.0" />
+                              <TextField layoutX="112.0" layoutY="20.0" prefHeight="27.0" prefWidth="259.0" style="-fx-border-color: #000000;" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children>
+            </Pane>
+            <Pane fx:id="profilPengguna" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;">
+               <children>
+                  <Text layoutX="16.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="15.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nomor HP">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="14.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="14.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Alamat">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="namaPengguna" layoutX="162.0" layoutY="75.0" onMouseClicked="#editPengguna" prefHeight="18.0" prefWidth="214.0" text="namaPengguna" />
+                  <Label fx:id="nomorHP" layoutX="162.0" layoutY="104.0" onMouseClicked="#editHP" prefHeight="18.0" prefWidth="214.0" text="nomorHP" />
+                  <Label fx:id="email" layoutX="162.0" layoutY="135.0" onMouseClicked="#editEmail" prefHeight="18.0" prefWidth="214.0" text="email" />
+                  <Label fx:id="alamat" alignment="TOP_LEFT" layoutX="162.0" layoutY="166.0" onMouseClicked="#editAlamat" prefHeight="79.0" prefWidth="214.0" text="alamat" wrapText="true" />
+                  <Text layoutX="14.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Foto Profil">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <AnchorPane prefHeight="39.0" prefWidth="400.0" style="-fx-background-color: #68A971; -fx-border-color: #000000;">
+                     <children>
+                        <ImageView fitHeight="33.0" fitWidth="138.0" layoutX="248.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Icon/gambar-removebg-preview.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="14.0" layoutY="2.0" prefHeight="35.0" prefWidth="222.0" text="Profil Pengguna" textFill="WHITE">
+                           <font>
+                              <Font name="Cambria Bold" size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <Text layoutX="16.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nama Usaha">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="namaUsaha" layoutX="162.0" layoutY="48.0" onMouseClicked="#editUsaha" prefHeight="18.0" prefWidth="214.0" text="namaUsaha" />
+                  <AnchorPane layoutX="162.0" layoutY="259.0" prefHeight="72.0" prefWidth="74.0">
+                     <children>
+                        <ImageView fx:id="profil" fitHeight="88.0" fitWidth="74.0" onMouseClicked="#getProfil" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </AnchorPane>
+                  <Button fx:id="editProfil" layoutX="247.0" layoutY="355.0" mnemonicParsing="false" onMouseClicked="#editProfil" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Edit profil" textFill="WHITE" />
+                  <Button fx:id="backHome" layoutX="323.0" layoutY="355.0" mnemonicParsing="false" onMouseClicked="#backHome" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Kembali" textFill="WHITE" />
+                  <TextField fx:id="formEmail" layoutX="162.0" layoutY="131.0" prefHeight="26.0" prefWidth="214.0" visible="false" />
+                  <TextField fx:id="formHP" layoutX="162.0" layoutY="100.0" prefHeight="26.0" prefWidth="214.0" visible="false" />
+                  <TextField fx:id="formPengguna" layoutX="162.0" layoutY="71.0" prefHeight="26.0" prefWidth="214.0" visible="false" />
+                  <TextField fx:id="formUsaha" layoutX="162.0" layoutY="44.0" prefHeight="26.0" prefWidth="214.0" visible="false" />
+                  <TextArea fx:id="formAlamat" layoutX="162.0" layoutY="166.0" prefHeight="79.0" prefWidth="200.0" visible="false" />
+                  <Text layoutX="148.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="148.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="148.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="148.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="148.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Text>
                </children>
             </Pane>
          </children>
