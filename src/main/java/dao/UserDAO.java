@@ -70,12 +70,16 @@ public class UserDAO {
                 rs.getString("username"),
                 rs.getString("nomor_hp"),
                 rs.getString("password"),
+                rs.getString("email_pengguna"),
+                rs.getString("nama_usaha"),
+                rs.getString("alamat_pengguna"),
                 rs.getBytes("Image")
             );
             return user;
         }
     } catch (SQLException e) {
         e.printStackTrace();
+        
     } finally {
         // Tutup koneksi menggunakan BaseDAO
         BaseDAO.closeCon(con);
@@ -83,6 +87,31 @@ public class UserDAO {
     return null; // Return null jika user tidak ditemukan
 }
     
+    public static void updateUser(int IdUser, String namaUsaha, String Username, String NomorHP, String Alamat, String Email) throws SQLException {
+    String query = "UPDATE user SET nama_usaha = ?, username = ?, nomor_hp = ?, alamat_pengguna = ?, email_pengguna = ? WHERE id = ?";
+    Connection con = null;
+    
+    try{
+        con = BaseDAO.getCon();
+        PreparedStatement stmt = con.prepareStatement(query);
+        stmt.setString(1, namaUsaha);
+        stmt.setString(2, Username);
+        stmt.setString(3, NomorHP);
+        stmt.setString(4, Alamat);
+        stmt.setString(5, Email);
+        stmt.setInt(6, IdUser);
+        int rowsUpdated = stmt.executeUpdate();
+        if (rowsUpdated > 0) {
+                System.out.println("User image updated successfully.");
+            }
+    }
+    catch (SQLException e) {
+        e.printStackTrace();
+        throw e;
+    } finally {
+            BaseDAO.closeCon(con);
+        }
+    }
     
 
     public static void insertEntry(int IdUser, byte[] imageData) throws SQLException {
