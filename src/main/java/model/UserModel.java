@@ -9,18 +9,46 @@ public class UserModel {
     private String password;
     private String username;
     private String nomorHp;
-    private String role;
+    private String email;
+    private String namaUsaha;
+    private String alamat;
     private byte[] profilePhoto;
-
-
     
-
-    public UserModel(int idUser, String username, String nomorHp, String password, byte[] profilePhoto) {
+    
+    public UserModel(int idUser, String username, String nomorHp, String password, String alamat, String email, String namaUsaha, byte[] profilePhoto) {
         this.idUser = idUser;
         this.username = username;
         this.nomorHp = nomorHp;
         this.password = password;
+        this.alamat = alamat;
+        this.email = email;
+        this.namaUsaha = namaUsaha;
         this.profilePhoto = profilePhoto;
+    }
+    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNamaUsaha() {
+        return namaUsaha;
+    }
+
+    public void setNamaUsaha(String namaUsaha) {
+        this.namaUsaha = namaUsaha;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
     }
 
     public int getIdUser() {
@@ -55,13 +83,6 @@ public class UserModel {
         this.nomorHp = nomorHp;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }   
     
     public byte[] getProfilePhoto() {
         return profilePhoto;
