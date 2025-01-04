@@ -30,7 +30,6 @@ public class UserDAO {
         }
         return false;
     }
-
     
     public boolean registerUser(String username, String nomorHp, String password ) {
         try (Connection con = BaseDAO.getCon()) {
@@ -54,22 +53,25 @@ public class UserDAO {
     Connection con = null;
 
     try {
+        // Mendapatkan koneksi dari BaseDAO
         con = BaseDAO.getCon();
         PreparedStatement stmt = con.prepareStatement(query);
         stmt.setString(1, username);
         stmt.setString(2, password);
-        
+
+        // Eksekusi query
         ResultSet rs = stmt.executeQuery();
 
-        if (rs.next()) { 
+        if (rs.next()) {
+            // Jika user ditemukan, buat objek UserModel
             UserModel user = new UserModel(
-                rs.getInt("id_user"),
+                rs.getInt("id"),
                 rs.getString("username"),
                 rs.getString("nomor_hp"),
                 rs.getString("password"),
+                rs.getString("alamat_pengguna"),
                 rs.getString("email_pengguna"),
                 rs.getString("nama_usaha"),
-                rs.getString("alamat_pengguna"),
                 rs.getBytes("Image")
             );
             return user;
@@ -85,7 +87,7 @@ public class UserDAO {
 }
     
     public static void updateUser(int IdUser, String namaUsaha, String Username, String NomorHP, String Alamat, String Email) throws SQLException {
-    String query = "UPDATE user SET nama_usaha = ?, username = ?, nomor_hp = ?, alamat_pengguna = ?, email_pengguna = ? WHERE id_user = ?";
+    String query = "UPDATE user SET nama_usaha = ?, username = ?, nomor_hp = ?, email_pengguna = ?, alamat_pengguna = ? WHERE id = ?";
     Connection con = null;
     
     try{
@@ -112,7 +114,7 @@ public class UserDAO {
     
 
     public static void insertEntry(int IdUser, byte[] imageData) throws SQLException {
-    String query = "UPDATE user SET Image = ? WHERE id_user = ?"; // Update query based on userId
+    String query = "UPDATE user SET Image = ? WHERE id = ?"; // Update query based on userId
     Connection con = null;
         try {
             con = BaseDAO.getCon();
