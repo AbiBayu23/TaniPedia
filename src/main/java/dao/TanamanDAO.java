@@ -9,12 +9,12 @@ import java.util.List;
 
 public class TanamanDAO {
 
-    public List<TanamanModel> getAllTanaman() {
+     public List<TanamanModel> getAllTanaman() {
         List<TanamanModel> tanamanList = new ArrayList<>();
-        try (Connection con = BaseDAO.getCon()) {
-            String query = "SELECT * FROM tanaman";
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+        try{
+             String query = "SELECT * FROM tanaman";
+             PreparedStatement stmt = BaseDAO.getCon().prepareStatement(query);
+             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 TanamanModel tanaman = new TanamanModel();
