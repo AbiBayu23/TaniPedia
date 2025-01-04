@@ -1,14 +1,18 @@
 .button
 {
 -fx-background-color :  #02030A;
--fx-text-fill : #e7e5e5;
+-fx-background-radius : 20 20 20 20;
 }
+
 .button:hover{
--fx-background-color :  #02030A;
+-fx-background-color :  #33ff00;
+-fx-background-radius : 20 20 20 20;
 }
+
 .button:pressed
 {
 -fx-background-color : #1620A1;
+-fx-background-radius : 20 20 20 20;
 }
 
 .scroll-pane {

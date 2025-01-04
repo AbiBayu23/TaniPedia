@@ -32,97 +32,43 @@ import javafx.stage.Stage;
 import model.TanamanModel;
 import model.UserModel;
 
-/**
- * FXML Controller class
- *
- * @author abiba
- */
 public class HomeController implements Initializable {
     private UserModel userModel;
-    @FXML
-    private Button btnOverview;
-    @FXML
-    private Button btnPackages;
-    @FXML
-    private Button btnOrders;
-    @FXML
-    private Button btnMenus;
-    @FXML
-    private Button btnSignout;
-    @FXML
-    private Pane Belanja;
-    @FXML
-    private Pane Ensiklopedia;
-    @FXML
-    private Pane Home;
-    @FXML
-    private Label username;
-    @FXML
-    private Pane Kamus;
-    @FXML
-    private Label hello;
     private UserDAO userDAO;
     private TanamanDAO tanamanDAO;
     
     @FXML
-    private ImageView profil;
+    private Label username, hello, namaUsaha, namaPengguna, nomorHP, email, alamat;
+
     @FXML
-    private ImageView addEnsiklopedia;
+    private ImageView Img, fotoProfil, addEnsiklopedia;
+
     @FXML
-    private Pane formEnsiklopedia;
-    private ComboBox<TanamanModel> listTanaman;
-    @FXML
-    private Pane profilPengguna;
-    @FXML
-    private ImageView fotoProfil;
-    @FXML
-    private VBox pane;
-    @FXML
-    private AnchorPane profilPane;
-    @FXML
-    private Label namaPengguna;
-    @FXML
-    private Label nomorHP;
-    @FXML
-    private Label email;
-    @FXML
-    private Label alamat;
-    @FXML
-    private Label namaUsaha;
-    @FXML
-    private Button editProfil;
-    @FXML
-    private Button backHome;
-    @FXML
-    private TextField formEmail;
-    @FXML
-    private TextField formHP;
-    @FXML
-    private TextField formPengguna;
-    @FXML
-    private TextField formUsaha;
+    private TextField formUsaha, formPengguna, formHP, formEmail;
+
     @FXML
     private TextArea formAlamat;
+
     @FXML
-    private Pane previousPane;
-    /**
-     * Initializes the controller class.
-     */
+    private Button editProfil, insertImg, confirmEdit, backHome, btnOverview, btnPackages, btnOrders, btnMenus, btnSignout;
+
+    @FXML
+    private Pane Belanja, Ensiklopedia, Home, Kamus, profilPengguna, formEnsiklopedia, previousPane;
+
+    @FXML
+    private AnchorPane profilImg, infoPengguna, formEdit;
+
+    @FXML
+    private VBox pane;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showPane(Home);
-       
     }
-    
-    
     
     public HomeController() {
-        // Inisialisasi UserDAO
         this.userDAO = new UserDAO();
     }
-    
-    
-   
     
     private byte[] readFileToByteArray(File file) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
@@ -130,11 +76,10 @@ public class HomeController implements Initializable {
             fis.read(data);
             return data;
         }
-    } 
+    }
     
-
     @FXML
-    private void getProfil(MouseEvent event) throws IOException, SQLException {
+    private void insertImg(MouseEvent event) throws IOException, SQLException {
         int userId = userModel.getIdUser();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image");
@@ -144,9 +89,8 @@ public class HomeController implements Initializable {
 
         File selectedFile = fileChooser.showOpenDialog(username.getScene().getWindow());
             if (selectedFile != null) {
-            // Optional: Display the selected image in the ImageView
             Image image = new Image(selectedFile.toURI().toString());
-            profil.setImage(image);
+            Img.setImage(image);
             fotoProfil.setImage(image);
             UserDAO.insertEntry(userId, this.readFileToByteArray(selectedFile));
         }
@@ -196,14 +140,19 @@ public class HomeController implements Initializable {
         showPane(profilPengguna);
     }
     
-
+    @FXML
+    private void editProfilAction(MouseEvent event) {
+        infoPengguna.setVisible(false);
+        formEdit.setVisible(true);
+        editProfil.setVisible(false);
+        confirmEdit.setVisible(true);
+    }
 
     private void showPane(Pane paneToShow) {
         if (paneToShow != null && paneToShow.isVisible()) {
-        return; // Jika pane yang diminta sudah terlihat, tidak perlu berubah
+        return;
     }
 
-    // Simpan pane sebelumnya
     previousPane = getVisiblePane();
 
     Home.setVisible(false);
@@ -212,8 +161,7 @@ public class HomeController implements Initializable {
     Kamus.setVisible(false);
     formEnsiklopedia.setVisible(false);
     profilPengguna.setVisible(false);
-
-    // Tampilkan pane baru
+    
     paneToShow.setVisible(true);
     }
     
@@ -234,13 +182,21 @@ public class HomeController implements Initializable {
         }
         
         this.userModel = user;
+        formUsaha.setText(user.getNamaUsaha());
+        formPengguna.setText(user.getUsername());
+        formHP.setText(user.getNomorHp());
+        formEmail.setText(user.getEmail());
+        formAlamat.setText(user.getAlamat());
+        username.setText(user.getUsername());
+        namaUsaha.setText(user.getNamaUsaha());
         namaPengguna.setText(user.getUsername());
         nomorHP.setText(user.getNomorHp());
-        username.setText(user.getUsername());
+        email.setText(user.getEmail());
+        alamat.setText(user.getAlamat());
         hello.setText("Hello, " + user.getUsername() + "!");
         if (user.getProfilePhoto() != null) {
             Image foto = new Image(new ByteArrayInputStream(user.getProfilePhoto()));
-            profil.setImage(foto);
+            Img.setImage(foto);
         }
         if (user.getProfilePhoto() != null) {
             Image foto = new Image(new ByteArrayInputStream(user.getProfilePhoto()));
@@ -249,107 +205,20 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    private void editProfil(MouseEvent event) {
-         try {
-        userModel.setNamaUsaha(formUsaha.getText());
-        userModel.setUsername(formPengguna.getText());
-        userModel.setNomorHp(formHP.getText());
-        userModel.setAlamat(formAlamat.getText());
-        userModel.setEmail(formEmail.getText());
+    private void kembali(MouseEvent event) {
+        if (formEdit.isVisible()) {
+            formEdit.setVisible(false);
+            confirmEdit.setVisible(false);
 
-        // Update database
-        int userId = userModel.getIdUser();
-        String NamaUsaha = userModel.getNamaUsaha();
-        String Username = userModel.getUsername();
-        String NomorHP = userModel.getNomorHp();
-        String Alamat = userModel.getAlamat();
-        String Email = userModel.getEmail();
-        
-
-        // Tampilkan kembali label
-        namaUsaha.setText(formUsaha.getText());
-        formUsaha.setVisible(false);
-        namaUsaha.setVisible(true);
-
-        namaPengguna.setText(formPengguna.getText());
-        formPengguna.setVisible(false);
-        namaPengguna.setVisible(true);
-
-        nomorHP.setText(formHP.getText());
-        formHP.setVisible(false);
-        nomorHP.setVisible(true);
-
-        alamat.setText(formAlamat.getText());
-        formAlamat.setVisible(false);
-        alamat.setVisible(true);
-        
-        email.setText(formEmail.getText());
-        formEmail.setVisible(false);
-        email.setVisible(true);
-        
-        UserDAO.updateUser(userId, NamaUsaha, Username, NomorHP, Alamat, Email);
-
-        // Notifikasi sukses
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Edit Profil");
-        alert.setHeaderText(null);
-        alert.setContentText("Profil berhasil diperbarui!");
-        alert.showAndWait();
-    } catch (Exception e) {
-        e.printStackTrace();
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Edit Profil");
-        alert.setHeaderText(null);
-        alert.setContentText("Terjadi kesalahan saat memperbarui profil!");
-        alert.showAndWait();
-    }
-    }
-
-    @FXML
-    private void backHome(MouseEvent event) {
-         if (previousPane != null) {
-        showPane(previousPane);
-        previousPane = null;
+            infoPengguna.setVisible(true);
+            editProfil.setVisible(true);
         } else {
-            showPane(Home);
+            if (previousPane != null) {
+                showPane(previousPane);
+                previousPane = null;
+            } else {
+                showPane(Home);
+            }
         }
     }
-
-    @FXML
-    private void editPengguna(MouseEvent event) {
-        formPengguna.setText(namaPengguna.getText());
-        formPengguna.setVisible(true);
-        namaPengguna.setVisible(false);
-    }
-
-    @FXML
-    private void editHP(MouseEvent event) {
-        formHP.setText(nomorHP.getText());
-        formHP.setVisible(true);
-        nomorHP.setVisible(false);
-    }
-
-    @FXML
-    private void editAlamat(MouseEvent event) {
-        formAlamat.setText(alamat.getText());
-        formAlamat.setVisible(true);
-        alamat.setVisible(false);
-    }
-
-    @FXML
-    private void editUsaha(MouseEvent event) {
-        formUsaha.setText(namaUsaha.getText());
-        formUsaha.setVisible(true);
-        namaUsaha.setVisible(false);
-    }
-
-    @FXML
-    private void editEmail(MouseEvent event) {
-        formEmail.setText(email.getText());
-        formEmail.setVisible(true);
-        email.setVisible(false);
-    }
-
-    
-
 }

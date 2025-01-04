@@ -54,19 +54,16 @@ public class UserDAO {
     Connection con = null;
 
     try {
-        // Mendapatkan koneksi dari BaseDAO
         con = BaseDAO.getCon();
         PreparedStatement stmt = con.prepareStatement(query);
         stmt.setString(1, username);
         stmt.setString(2, password);
-
-        // Eksekusi query
+        
         ResultSet rs = stmt.executeQuery();
 
-        if (rs.next()) {
-            // Jika user ditemukan, buat objek UserModel
+        if (rs.next()) { 
             UserModel user = new UserModel(
-                rs.getInt("id"),
+                rs.getInt("id_user"),
                 rs.getString("username"),
                 rs.getString("nomor_hp"),
                 rs.getString("password"),
@@ -88,7 +85,7 @@ public class UserDAO {
 }
     
     public static void updateUser(int IdUser, String namaUsaha, String Username, String NomorHP, String Alamat, String Email) throws SQLException {
-    String query = "UPDATE user SET nama_usaha = ?, username = ?, nomor_hp = ?, alamat_pengguna = ?, email_pengguna = ? WHERE id = ?";
+    String query = "UPDATE user SET nama_usaha = ?, username = ?, nomor_hp = ?, alamat_pengguna = ?, email_pengguna = ? WHERE id_user = ?";
     Connection con = null;
     
     try{
@@ -115,7 +112,7 @@ public class UserDAO {
     
 
     public static void insertEntry(int IdUser, byte[] imageData) throws SQLException {
-    String query = "UPDATE user SET Image = ? WHERE id = ?"; // Update query based on userId
+    String query = "UPDATE user SET Image = ? WHERE id_user = ?"; // Update query based on userId
     Connection con = null;
         try {
             con = BaseDAO.getCon();

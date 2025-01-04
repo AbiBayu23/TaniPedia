@@ -24,9 +24,6 @@ public class LoginController {
 
     @FXML
     private TextField Username;
-
-    @FXML
-    private TextField Pass;
     
     @FXML
     private PasswordField passwordField;
@@ -77,8 +74,7 @@ public class LoginController {
                 FXMLLoader loader = new FXMLLoader(url);
 
                 Parent root = loader.load();
-
-                // Dapatkan controller Home untuk set data user
+                
                 HomeController homeController = loader.getController();
                 homeController.setUserModel(user);
 
