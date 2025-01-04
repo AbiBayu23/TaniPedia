@@ -24,6 +24,9 @@ public class LoginController {
 
     @FXML
     private TextField Username;
+
+    @FXML
+    private TextField Pass;
     
     @FXML
     private PasswordField passwordField;
@@ -42,7 +45,6 @@ public class LoginController {
     private boolean isPasswordVisible = false;
 
     public LoginController() {
-        // Inisialisasi UserDAO
         this.userDAO = new UserDAO();
     }
     
@@ -55,8 +57,8 @@ public class LoginController {
             isPasswordVisible = false;
         } else {
             textField.setText(passwordField.getText());
-            textField.setVisible(true);
             passwordField.setVisible(false);
+            textField.setVisible(true);
             isPasswordVisible = true;
         }
     }
@@ -65,19 +67,14 @@ public class LoginController {
     void klik(MouseEvent event) {
         String username = Username.getText();
         String password = passwordField.isVisible() ? passwordField.getText() : textField.getText();
-
         UserModel user = userDAO.getUser(username, password);
-
         if (user != null) {
             try {
                  URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
                 FXMLLoader loader = new FXMLLoader(url);
-
                 Parent root = loader.load();
-                
                 HomeController homeController = loader.getController();
                 homeController.setUserModel(user);
-
                 Stage stage = (Stage) Login.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.show();
@@ -95,7 +92,6 @@ public class LoginController {
         }
     }
 
-
     public void handleRegister(MouseEvent event) {
         try {
             URL url = new File("src/main/java/view/Register.fxml").toURI().toURL();
@@ -104,7 +100,6 @@ public class LoginController {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-            
         } catch (Exception e) {
             File file = new File("src/main/java/view/Register.fxml");
             System.out.println("File exists: " + file.exists());
