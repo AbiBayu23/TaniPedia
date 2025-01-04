@@ -110,13 +110,13 @@ public class HomeController implements Initializable {
     @FXML
     private Pane Tumbuhan;
     @FXML
-    private Button cancel;
-    @FXML
     private Button tambahTumbuhan;
     @FXML
     private TextField formNamaTanaman;
     @FXML
     private TextField formJenisTanaman;
+    @FXML
+    private Button Batal;
 
     /**
      * Initializes the controller class.
@@ -126,9 +126,9 @@ public class HomeController implements Initializable {
         showPane(Home);
        
     }
-
     public HomeController() {
         this.userDAO = new UserDAO();
+        this.tanamanDAO = new TanamanDAO();
     }
     
     @FXML
@@ -151,6 +151,10 @@ public class HomeController implements Initializable {
         showPane(Kamus);
     }
     @FXML
+    private void showProfil(MouseEvent event) {
+        showPane(profilPengguna);
+    }
+    @FXML
     private void showPengisian(MouseEvent event) {
         showPane(formEnsiklopedia);
     }
@@ -171,13 +175,11 @@ public class HomeController implements Initializable {
         Home.setVisible(false);
         Kamus.setVisible(false);
         Belanja.setVisible(false);
-        Tumbuhan.setVisible(true);
+        Tumbuhan.setVisible(false);
         Ensiklopedia.setVisible(false);
         profilPengguna.setVisible(false);
         formEnsiklopedia.setVisible(false);
 
-        
-        
         if (paneToShow == Tumbuhan) {
         Tumbuhan.setVisible(false); // Hide subpanel
         formEnsiklopedia.setVisible(true); // Parent panel should be visible
@@ -239,9 +241,6 @@ public class HomeController implements Initializable {
         }
     }
 
-    
-
-    
     void setUserModel(UserModel user) {
         if (user == null) {
         throw new IllegalArgumentException("UserModel cannot be null");
@@ -366,16 +365,49 @@ public class HomeController implements Initializable {
         formHP.setVisible(true);
         nomorHP.setVisible(false);
     }
-
     @FXML
-    private void showProfil(MouseEvent event) {
-    }
-
-    @FXML
-    private void cancel(MouseEvent event) {
+    private void klikBatal(MouseEvent event) {
+        Tumbuhan.setVisible(false);
+        formEnsiklopedia.setVisible(true);
     }
 
     @FXML
     private void tambahTumbuhan(MouseEvent event) {
+        try {
+            String namaTanaman = formNamaTanaman.getText();
+            String jenisTanaman = formJenisTanaman.getText();
+
+            if (namaTanaman.isEmpty() || jenisTanaman.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Validasi Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Semua field harus diisi!");
+                alert.showAndWait();
+                return;
+            }
+
+            TanamanModel tanaman = new TanamanModel();
+            tanaman.setNamaTanaman(namaTanaman);
+            tanaman.setJenisTanaman(jenisTanaman);
+
+            tanamanDAO.addTanaman(tanaman);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Tambah Tumbuhan");
+            alert.setHeaderText(null);
+            alert.setContentText("Data tumbuhan berhasil disimpan!");
+            alert.showAndWait();
+
+            formNamaTanaman.clear();
+            formJenisTanaman.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Tambah Tumbuhan");
+            alert.setHeaderText(null);
+            alert.setContentText("Terjadi kesalahan saat menyimpan data!");
+            alert.showAndWait();
+        }
     }
 }
