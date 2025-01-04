@@ -1,5 +1,6 @@
 package controller;
 
+import dao.TanamanDAO;
 import dao.UserDAO;
 import java.io.File;
 import javafx.fxml.FXML;
@@ -13,11 +14,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.text.Text;
+import model.TanamanModel;
 import model.UserModel;
 
 public class LoginController {
@@ -38,6 +41,8 @@ public class LoginController {
     private Label Register;
 
     private UserDAO userDAO;
+    
+    private TanamanDAO tanamanDAO;
 
     @FXML
     private Button Login;
@@ -46,6 +51,7 @@ public class LoginController {
 
     public LoginController() {
         this.userDAO = new UserDAO();
+        this.tanamanDAO = new TanamanDAO();
     }
     
     @FXML
@@ -68,13 +74,15 @@ public class LoginController {
         String username = Username.getText();
         String password = passwordField.isVisible() ? passwordField.getText() : textField.getText();
         UserModel user = userDAO.getUser(username, password);
+        List<TanamanModel> tanamanbox = tanamanDAO.getAllTanaman();
         if (user != null) {
             try {
-                 URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
+                URL url = new File("src/main/java/view/Home.fxml").toURI().toURL();
                 FXMLLoader loader = new FXMLLoader(url);
                 Parent root = loader.load();
                 HomeController homeController = loader.getController();
                 homeController.setUserModel(user);
+                homeController.loadTanamanToComboBox(tanamanbox);
                 Stage stage = (Stage) Login.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.show();
