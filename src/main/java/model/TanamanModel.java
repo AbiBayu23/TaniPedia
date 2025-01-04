@@ -4,8 +4,7 @@ public class TanamanModel {
     private int idTanaman;
     private String namaTanaman;
     private String jenisTanaman;
-
-    // Getters and Setters
+    
     public int getIdTanaman() {
         return idTanaman;
     }
@@ -29,4 +28,9 @@ public class TanamanModel {
     public void setJenisTanaman(String jenisTanaman) {
         this.jenisTanaman = jenisTanaman;
     }
+    @Override
+    public String toString(){
+        return this.namaTanaman;
+    }
+    
 }
