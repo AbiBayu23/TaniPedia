@@ -1,4 +1,5 @@
 package controller;
+import dao.EnsiklopediaDAO;
 import dao.TanamanDAO;
 import dao.UserDAO;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.net.URL;
 import model.UserModel;
 import model.TanamanModel;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
@@ -61,15 +63,15 @@ public class HomeController implements Initializable {
     private Label hello;
     
     private UserDAO userDAO;
+    private EnsiklopediaDAO ensiklopediaDAO;
     private TanamanDAO tanamanDAO;
+    private TanamanModel tanaman;
     
     @FXML
     private ImageView profil;
-    @FXML
-    private ImageView addEnsiklopedia;
+
     @FXML
     private Pane formEnsiklopedia;
-    private ComboBox<TanamanModel> listTanaman;
     @FXML
     private Pane profilPengguna;
     @FXML
@@ -106,17 +108,40 @@ public class HomeController implements Initializable {
     @FXML
     private Button newPlant;
     @FXML
-    private ComboBox<?> lisTanaman;
-    @FXML
     private Pane Tumbuhan;
     @FXML
     private Button tambahTumbuhan;
     @FXML
     private TextField formNamaTanaman;
     @FXML
-    private TextField formJenisTanaman;
+    private ComboBox<String> formJenisTanaman;
     @FXML
     private Button Batal;
+    @FXML
+    private ComboBox<TanamanModel> listTanaman;
+    private Button pilihFotoEnsiklopedia; // Tombol untuk memilih gambar
+
+    private byte[] fotoEnsiklopediaData; // Penyimpanan sementara untuk data gambar
+
+    private final List<String> jenisTanamanList = List.of(
+    "Tanaman Hias",
+    "Tanaman Umbi",
+    "Tanaman Buah",
+    "Tanaman Sayur",
+    "Tanaman Pangan"
+    );
+    @FXML
+    private Label isiJenisTanaman;
+    @FXML
+    private Button sourceFoto;
+    @FXML
+    private Button cancelEnsi;
+    @FXML
+    private TextArea formPanduanBudidaya;
+    @FXML
+    private TextArea formPenangananPenyakit;
+    @FXML
+    private TextField isiFotoEnsiklopedia;
 
     /**
      * Initializes the controller class.
@@ -124,7 +149,17 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showPane(Home);
-       
+        List<TanamanModel> tanamanList = tanamanDAO.getAllTanaman();
+        loadTanamanToComboBox(tanamanList);
+        formJenisTanaman.getItems().addAll(jenisTanamanList);
+        listTanaman.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        if (newValue instanceof TanamanModel) {
+            TanamanModel tanaman = (TanamanModel) newValue; // Casting manual
+            isiJenisTanaman.setText(tanaman.getJenisTanaman());
+        }else {
+            isiJenisTanaman.setText("Jenis tanaman tidak ditemukan");
+        }
+    });
     }
     public HomeController() {
         this.userDAO = new UserDAO();
@@ -259,8 +294,8 @@ public class HomeController implements Initializable {
             Image foto = new Image(new ByteArrayInputStream(user.getProfilePhoto()));
             fotoProfil.setImage(foto);
         }
-         if (user.getNamaUsaha() != null) {
-        namaUsaha.setText(user.getNamaUsaha());
+        if (user.getNamaUsaha() != null) {
+            namaUsaha.setText(user.getNamaUsaha());
         }
         if (user.getEmail() != null) {
             email.setText(user.getEmail());
@@ -370,14 +405,18 @@ public class HomeController implements Initializable {
         Tumbuhan.setVisible(false);
         formEnsiklopedia.setVisible(true);
     }
+    
+    
 
     @FXML
     private void tambahTumbuhan(MouseEvent event) {
         try {
+            // Ambil data dari form
             String namaTanaman = formNamaTanaman.getText();
-            String jenisTanaman = formJenisTanaman.getText();
+            String jenisTanaman = (String) formJenisTanaman.getValue(); // Ambil nilai dari ComboBox
 
-            if (namaTanaman.isEmpty() || jenisTanaman.isEmpty()) {
+            // Validasi input
+            if (namaTanaman.isEmpty() || jenisTanaman == null) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Validasi Input");
                 alert.setHeaderText(null);
@@ -386,20 +425,28 @@ public class HomeController implements Initializable {
                 return;
             }
 
+            // Buat model Tanaman
             TanamanModel tanaman = new TanamanModel();
             tanaman.setNamaTanaman(namaTanaman);
             tanaman.setJenisTanaman(jenisTanaman);
 
+            // Simpan data ke database
             tanamanDAO.addTanaman(tanaman);
 
+            // Tampilkan pesan sukses
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Tambah Tumbuhan");
             alert.setHeaderText(null);
             alert.setContentText("Data tumbuhan berhasil disimpan!");
             alert.showAndWait();
 
+            // Reset form
             formNamaTanaman.clear();
-            formJenisTanaman.clear();
+            formJenisTanaman.getSelectionModel().clearSelection();
+
+            // Muat ulang data ke ComboBox
+            List<TanamanModel> tanamanList = tanamanDAO.getAllTanaman();
+            loadTanamanToComboBox(tanamanList);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -410,4 +457,102 @@ public class HomeController implements Initializable {
             alert.showAndWait();
         }
     }
+
+    void loadTanamanToComboBox(List<TanamanModel> tanamanList) {
+        try {
+            listTanaman.getItems().clear();
+            listTanaman.getItems().addAll(tanamanList);
+        } catch (Exception e) {
+        }
+    }
+    
+    @FXML
+    private void pilihFotoEnsiklopedia(MouseEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Pilih Foto Ensiklopedia");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+            );
+
+            File selectedFile = fileChooser.showOpenDialog(sourceFoto.getScene().getWindow());
+            if (selectedFile != null) {
+                // Baca file gambar sebagai byte array
+                fotoEnsiklopediaData = readFileToByteArray(selectedFile);
+                // Menambahkan nama file ke dalam text field
+                isiFotoEnsiklopedia.setText(selectedFile.getName()); // Isi dengan nama file
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Foto Ensiklopedia");
+                alert.setHeaderText(null);
+                alert.setContentText("Foto berhasil dipilih!");
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Foto Ensiklopedia");
+            alert.setHeaderText(null);
+            alert.setContentText("Terjadi kesalahan saat memilih foto!");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void tambahEnsiklopedia(MouseEvent event) {
+        try {
+            // Ambil data dari form
+            String namaTanaman = listTanaman.getValue().getNamaTanaman();
+            String jenisTanaman = listTanaman.getValue().getJenisTanaman();
+            String panduanBudidaya = formPanduanBudidaya.getText();
+            String penangananPenyakit = formPenangananPenyakit.getText();
+
+            // Validasi input
+            if (namaTanaman.isEmpty() || jenisTanaman.isEmpty() || panduanBudidaya.isEmpty() || penangananPenyakit.isEmpty() || fotoEnsiklopediaData == null) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Validasi Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Semua field dan foto harus diisi!");
+                alert.showAndWait();
+                return;
+            }
+
+            // Simpan data ke database
+            ensiklopediaDAO.tambahEnsiklopedia(
+                namaTanaman,
+                jenisTanaman,
+                panduanBudidaya,
+                penangananPenyakit,
+                fotoEnsiklopediaData
+            );
+
+            // Tampilkan pesan sukses
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Tambah Ensiklopedia");
+            alert.setHeaderText(null);
+            alert.setContentText("Data ensiklopedia berhasil disimpan!");
+            alert.showAndWait();
+
+            // Reset form
+            formPanduanBudidaya.clear();
+            formPenangananPenyakit.clear();
+            isiFotoEnsiklopedia.clear();
+            fotoEnsiklopediaData = null;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Tambah Ensiklopedia");
+            alert.setHeaderText(null);
+            alert.setContentText("Terjadi kesalahan saat menyimpan data!");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void kembaliEnsi(MouseEvent event) {
+        showPane(Ensiklopedia);
+    }
+
+
+
 }
