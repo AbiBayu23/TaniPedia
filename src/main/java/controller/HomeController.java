@@ -202,6 +202,15 @@ public class HomeController implements Initializable {
             Image foto = new Image(new ByteArrayInputStream(user.getProfilePhoto()));
             fotoProfil.setImage(foto);
         }
+         if (user.getNamaUsaha() != null) {
+        namaUsaha.setText(user.getNamaUsaha());
+        }
+        if (user.getEmail() != null) {
+            email.setText(user.getEmail());
+        }
+        if (user.getAlamat() != null) {
+            alamat.setText(user.getAlamat());
+        }
     }
 
     @FXML
