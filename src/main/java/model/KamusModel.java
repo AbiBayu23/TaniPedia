@@ -1,31 +1,32 @@
 package model;
+
 public class KamusModel {
-    private int idKamus;
-    private String istilahKamus;
-    private String kontenKamus;
+    private String namaIstilah;
+    private String penjelasan;
 
-    public int getIdKamus() {
-        return idKamus;
+    // Konstruktor
+    public KamusModel(String namaIstilah, String penjelasan) {
+        this.namaIstilah = namaIstilah;
+        this.penjelasan = penjelasan;
     }
 
-    public void setIdKamus(int idKamus) {
-        this.idKamus = idKamus;
+    // Getter untuk namaIstilah
+    public String getNamaIstilah() {
+        return namaIstilah;
     }
 
-    public String getIstilahKamus() {
-        return istilahKamus;
+    // Setter untuk namaIstilah
+    public void setNamaIstilah(String namaIstilah) {
+        this.namaIstilah = namaIstilah;
     }
 
-    public void setIstilahKamus(String istilahKamus) {
-        this.istilahKamus = istilahKamus;
+    // Getter untuk penjelasan
+    public String getPenjelasan() {
+        return penjelasan;
     }
 
-    public String getKontenKamus() {
-        return kontenKamus;
+    // Setter untuk penjelasan
+    public void setPenjelasan(String penjelasan) {
+        this.penjelasan = penjelasan;
     }
-
-    public void setKontenKamus(String kontenKamus) {
-        this.kontenKamus = kontenKamus;
-    }
-    
 }
