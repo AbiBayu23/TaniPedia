@@ -1,5 +1,6 @@
 package controller;
 
+import dao.KamusDAO;
 import dao.TanamanDAO;
 import dao.UserDAO;
 import java.io.File;
@@ -43,6 +44,7 @@ public class LoginController {
     private UserDAO userDAO;
     
     private TanamanDAO tanamanDAO;
+    private KamusDAO kamusDAO;
 
     @FXML
     private Button Login;
@@ -83,6 +85,7 @@ public class LoginController {
                 HomeController homeController = loader.getController();
                 homeController.setUserModel(user);
                 homeController.loadTanamanToComboBox(tanamanbox);
+                homeController.loadKamusData();
                 Stage stage = (Stage) Login.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.show();
