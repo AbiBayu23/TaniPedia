@@ -7,60 +7,66 @@ import model.KamusModel;
 
 public class KamusDAO extends BaseDAO {
 
-    public List<KamusModel> getAllKamus() {
-        List<KamusModel> kamusList = new ArrayList<>();
-        String query = "SELECT * FROM kamus";
-        
-        try (Connection con = getCon(); PreparedStatement stmt = con.prepareStatement(query); ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                KamusModel kamus = new KamusModel();
-                kamus.setIdKamus(rs.getInt("id_kamus"));
-                kamus.setIstilahKamus(rs.getString("istilah_kamus"));
-                kamus.setKontenKamus(rs.getString("Konten"));
-                kamusList.add(kamus);
+    public List<KamusModel> getAllKamus() throws SQLException {
+    List<KamusModel> kamusList = new ArrayList<>();
+    String query = "SELECT nama_istilah, penjelasan FROM kamus";
+    try (Connection connection = BaseDAO.getCon();
+         PreparedStatement statement = connection.prepareStatement(query);
+         ResultSet resultSet = statement.executeQuery()) {
+
+        while (resultSet.next()) {
+            String namaIstilah = resultSet.getString("nama_istilah");
+            String penjelasan = resultSet.getString("penjelasan");
+            kamusList.add(new KamusModel(namaIstilah, penjelasan));
+        }
+    }
+    return kamusList;
+}
+    public void addKamus(KamusModel kamus) throws SQLException {
+    String query = "INSERT INTO kamus (nama_istilah, penjelasan) VALUES (?, ?)";
+    try (Connection connection = BaseDAO.getCon();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setString(1, kamus.getNamaIstilah());
+        statement.setString(2, kamus.getPenjelasan());
+        statement.executeUpdate();
+    }
+}
+
+    public void updateKamus(String namaIstilah, String penjelasanBaru) throws SQLException {
+    String query = "UPDATE kamus SET penjelasan = ? WHERE nama_istilah = ?";
+    try (Connection connection = BaseDAO.getCon();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setString(1, penjelasanBaru);
+        statement.setString(2, namaIstilah);
+        statement.executeUpdate();
+    }
+}
+    public void deleteKamus(String namaIstilah) throws SQLException {
+    String query = "DELETE FROM kamus WHERE nama_istilah = ?";
+    try (Connection connection = BaseDAO.getCon();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setString(1, namaIstilah);
+        statement.executeUpdate();
+    }
+}
+    public KamusModel getKamusByNamaIstilah(String namaIstilah) throws SQLException {
+    KamusModel kamus = null;
+    String query = "SELECT id_kamus, nama_istilah, penjelasan FROM kamus WHERE nama_istilah = ?";
+    try (Connection connection = BaseDAO.getCon();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setString(1, namaIstilah);
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                String penjelasan = resultSet.getString("penjelasan");
+                kamus = new KamusModel(namaIstilah, penjelasan);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return kamusList;
     }
+    return kamus;
+}
 
-    public boolean addKamus(KamusModel kamus) {
-        String query = "INSERT INTO kamus (istilah_kamus, konten) VALUES (?, ?)";
-        
-        try (Connection con = getCon(); PreparedStatement stmt = con.prepareStatement(query)) {
-            stmt.setString(1, kamus.getIstilahKamus());
-            stmt.setString(2, kamus.getKontenKamus());
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean updateKamus(KamusModel kamus) {
-        String query = "UPDATE kamus SET istilah_kamus = ?, konten = ? WHERE id_kamus = ?";
-        
-        try (Connection con = getCon(); PreparedStatement stmt = con.prepareStatement(query)) {
-            stmt.setString(1, kamus.getIstilahKamus());
-            stmt.setString(2, kamus.getKontenKamus());
-            stmt.setInt(3, kamus.getIdKamus());
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean deleteKamus(int idKamus) {
-        String query = "DELETE FROM Kamus WHERE id_Kamus = ?";
-        
-        try (Connection con = getCon(); PreparedStatement stmt = con.prepareStatement(query)) {
-            stmt.setInt(1, idKamus);
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 }
