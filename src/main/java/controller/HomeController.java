@@ -2,16 +2,21 @@ package controller;
 import dao.EnsiklopediaDAO;
 import dao.TanamanDAO;
 import dao.UserDAO;
+import dao.KamusDAO;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 import model.UserModel;
+import model.KamusModel;
 import model.TanamanModel;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
@@ -29,8 +34,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * FXML Controller class
@@ -123,13 +131,7 @@ public class HomeController implements Initializable {
 
     private byte[] fotoEnsiklopediaData; // Penyimpanan sementara untuk data gambar
 
-    private final List<String> jenisTanamanList = List.of(
-    "Tanaman Hias",
-    "Tanaman Umbi",
-    "Tanaman Buah",
-    "Tanaman Sayur",
-    "Tanaman Pangan"
-    );
+    
     @FXML
     private Label isiJenisTanaman;
     @FXML
@@ -142,6 +144,30 @@ public class HomeController implements Initializable {
     private TextArea formPenangananPenyakit;
     @FXML
     private TextField isiFotoEnsiklopedia;
+    @FXML
+    private ImageView ButtonKamus;
+    @FXML
+    private TextArea fieldPenjelasan;
+    @FXML
+    private Button tambahKamus;
+    @FXML
+    private TextField formNamaIstilah;
+    @FXML
+    private Pane formKamus;
+    @FXML
+    private ImageView ButtonEnsiklopedia;
+    @FXML
+    private TableView<KamusModel> ListKamus;
+    @FXML
+    private TableColumn<KamusModel, String> namaIstilah;
+    @FXML
+    private TableColumn<KamusModel, String> isiPenjelasan;
+    @FXML
+    private Button addEnsiklopedia;
+    private KamusDAO kamusDAO;
+    private KamusModel kamus;
+    @FXML
+    private Button batalTambahKamus;
 
     /**
      * Initializes the controller class.
@@ -149,12 +175,31 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showPane(Home);
+        
         List<TanamanModel> tanamanList = tanamanDAO.getAllTanaman();
         loadTanamanToComboBox(tanamanList);
-        formJenisTanaman.getItems().addAll(jenisTanamanList);
         listTanaman.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        ObservableList<String> jenisTanamanList = FXCollections.observableArrayList(
+        "Tanaman Buah",
+        "Tanaman Sayur",
+        "Tanaman Hias",
+        "Tanaman Pangan",
+        "Tanaman Umbi"
+        );
+        namaIstilah.setCellValueFactory(cellData -> {
+            System.out.println("Nama Istilah: " + cellData.getValue().getNamaIstilah());
+            return new SimpleStringProperty(cellData.getValue().getNamaIstilah());
+        });
+
+        isiPenjelasan.setCellValueFactory(cellData -> {
+            System.out.println("Penjelasan: " + cellData.getValue().getPenjelasan());
+            return new SimpleStringProperty(cellData.getValue().getPenjelasan());
+        });
+        loadKamusData();
+        
+        formJenisTanaman.setItems(jenisTanamanList);
         if (newValue instanceof TanamanModel) {
-            TanamanModel tanaman = (TanamanModel) newValue; // Casting manual
+            TanamanModel tanaman = (TanamanModel) newValue;
             isiJenisTanaman.setText(tanaman.getJenisTanaman());
         }else {
             isiJenisTanaman.setText("Jenis tanaman tidak ditemukan");
@@ -164,6 +209,8 @@ public class HomeController implements Initializable {
     public HomeController() {
         this.userDAO = new UserDAO();
         this.tanamanDAO = new TanamanDAO();
+        this.ensiklopediaDAO = new EnsiklopediaDAO();
+        this.kamusDAO = new KamusDAO(); 
     }
     
     @FXML
@@ -196,9 +243,16 @@ public class HomeController implements Initializable {
     @FXML
     private void showTumbuhan(MouseEvent event) {
         if (!formEnsiklopedia.isVisible()) {
-        showPane(formEnsiklopedia); // Tampilkan formEnsiklopedia
+        showPane(formEnsiklopedia);
     }
-    Tumbuhan.setVisible(true); // Tampilkan subpanel Tumbuhan
+    Tumbuhan.setVisible(true);
+    }
+    @FXML
+    private void showFormKamus(MouseEvent event) {
+        if (!Kamus.isVisible()) {
+        showPane(Kamus);
+    }
+    formKamus.setVisible(true);
     }
     
     private void showPane(Pane paneToShow) {
@@ -211,6 +265,7 @@ public class HomeController implements Initializable {
         Kamus.setVisible(false);
         Belanja.setVisible(false);
         Tumbuhan.setVisible(false);
+        formKamus.setVisible(false);
         Ensiklopedia.setVisible(false);
         profilPengguna.setVisible(false);
         formEnsiklopedia.setVisible(false);
@@ -218,6 +273,10 @@ public class HomeController implements Initializable {
         if (paneToShow == Tumbuhan) {
         Tumbuhan.setVisible(false); // Hide subpanel
         formEnsiklopedia.setVisible(true); // Parent panel should be visible
+        }
+        if (paneToShow == formKamus) {
+        formKamus.setVisible(false); // Hide subpanel
+        Kamus.setVisible(true); // Parent panel should be visible
         }
         
         paneToShow.setVisible(true);
@@ -413,7 +472,7 @@ public class HomeController implements Initializable {
         try {
             // Ambil data dari form
             String namaTanaman = formNamaTanaman.getText();
-            String jenisTanaman = (String) formJenisTanaman.getValue(); // Ambil nilai dari ComboBox
+            String jenisTanaman = formJenisTanaman.getValue(); // Ambil nilai dari ComboBox
 
             // Validasi input
             if (namaTanaman.isEmpty() || jenisTanaman == null) {
@@ -424,8 +483,6 @@ public class HomeController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-
-            // Buat model Tanaman
             TanamanModel tanaman = new TanamanModel();
             tanaman.setNamaTanaman(namaTanaman);
             tanaman.setJenisTanaman(jenisTanaman);
@@ -465,6 +522,24 @@ public class HomeController implements Initializable {
         } catch (Exception e) {
         }
     }
+    void loadKamusData() {
+    try {
+        List<KamusModel> kamusList = kamusDAO.getAllKamus(); // Ganti dengan DAO yang sesuai
+        ObservableList<KamusModel> data = FXCollections.observableArrayList(kamusList);
+        namaIstilah.setCellValueFactory(new PropertyValueFactory<>("namaIstilah"));
+    isiPenjelasan.setCellValueFactory(new PropertyValueFactory<>("penjelasan"));
+
+        ListKamus.setItems(data);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Gagal memuat data kamus!");
+        alert.showAndWait();
+    }
+}
+
     
     @FXML
     private void pilihFotoEnsiklopedia(MouseEvent event) {
@@ -552,7 +627,61 @@ public class HomeController implements Initializable {
     private void kembaliEnsi(MouseEvent event) {
         showPane(Ensiklopedia);
     }
+    @FXML
+    private void addKamus(MouseEvent event) {
+        try {
+            // Ambil data dari form
+            String namaIstilah = formNamaIstilah.getText();
+            String penjelasan = fieldPenjelasan.getText();
 
+            // Validasi input
+            if (namaIstilah.isEmpty() || penjelasan.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Validasi Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Semua field harus diisi!");
+                alert.showAndWait();
+                return;
+            }
 
+            // Simpan data ke database
+            kamus = new KamusModel(namaIstilah, penjelasan);
+            kamus.setNamaIstilah(namaIstilah);
+            kamus.setPenjelasan(penjelasan);
 
+            kamusDAO.addKamus(kamus);
+
+            // Tampilkan pesan sukses
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Tambah Kamus");
+            alert.setHeaderText(null);
+            alert.setContentText("Data istilah berhasil disimpan!");
+            alert.showAndWait();
+
+            // Reset form
+            formNamaIstilah.clear();
+            fieldPenjelasan.clear();
+
+            // Muat ulang data ke TableView
+            loadKamusData();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Tambah Kamus");
+            alert.setHeaderText(null);
+            alert.setContentText("Terjadi kesalahan saat menyimpan data istilah!");
+            alert.showAndWait();
+        }
+    }
+    @FXML
+    private void batalTambahKamus(MouseEvent event) {
+        // Reset form Kamus
+        formNamaIstilah.clear();
+        fieldPenjelasan.clear();
+
+        // Kembali ke tampilan utama Kamus
+        showPane(Kamus);
+        formKamus.setVisible(false);
+    }
 }
