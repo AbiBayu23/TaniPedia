@@ -215,14 +215,15 @@
                               <TableView fx:id="ListKamus" layoutX="-1.0" prefHeight="251.0" prefWidth="680.0" style="-fx-border-color: #000000;">
                                 <columns>
                                   <TableColumn fx:id="namaIstilah" prefWidth="123.99999618530273" text="Nama Istilah" />
-                                  <TableColumn fx:id="isiPenjelasan" prefWidth="551.9999847412109" text="Penjelasan" />
+                                  <TableColumn fx:id="isiPenjelasan" prefWidth="421.0" text="Penjelasan" />
+                                    <TableColumn fx:id="aksi" prefWidth="130.0" text="Aksi" />
                                 </columns>
                               </TableView>
                            </children>
                         </AnchorPane>
                     </content>
                   </ScrollPane>
-                  <Pane fx:id="formKamus" layoutX="48.0" layoutY="89.0" prefHeight="213.0" prefWidth="292.0" style="-fx-background-color: #68a971; -fx-border-color: #000000;">
+                  <Pane fx:id="formKamus" layoutX="48.0" layoutY="89.0" prefHeight="213.0" prefWidth="292.0" style="-fx-background-color: #68a971; -fx-border-color: #000000;" visible="false">
                      <children>
                         <Button fx:id="batalTambahKamus" layoutX="222.0" layoutY="174.0" mnemonicParsing="false" onMouseClicked="#batalTambahKamus" prefHeight="26.0" prefWidth="56.0" style="-fx-background-color: #fdb58e; -fx-border-color: #000000;" text="Cancel" textFill="#fffbfb">
                            <font>
