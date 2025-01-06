@@ -38,12 +38,13 @@ public class KamusDAO extends BaseDAO {
 
     // Memperbarui data Kamus berdasarkan nama istilah
     public void updateKamus(KamusModel kamus) throws SQLException {
-        String query = "UPDATE kamus SET penjelasan = ? WHERE nama_istilah = ?";
+        String query = "UPDATE kamus SET penjelasan = ? AND nama_istilah = ? WHERE Id = ?";
         try (Connection connection = BaseDAO.getCon();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, kamus.getPenjelasan());
             statement.setString(2, kamus.getNamaIstilah());
+            statement.setInt(3, kamus.getId());
             statement.executeUpdate();
         }
     }
