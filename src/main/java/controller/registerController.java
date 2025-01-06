@@ -20,11 +20,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author abiba
- */
 public class registerController implements Initializable {
 
     @FXML

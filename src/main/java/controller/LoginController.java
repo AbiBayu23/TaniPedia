@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -25,30 +24,23 @@ import model.TanamanModel;
 import model.UserModel;
 
 public class LoginController {
-
     @FXML
     private TextField Username;
-
     @FXML
     private TextField Pass;
-    
     @FXML
     private PasswordField passwordField;
-
     @FXML
     private TextField textField;
-    
     @FXML
     private Label Register;
-
-    private UserDAO userDAO;
-    
-    private TanamanDAO tanamanDAO;
-    private KamusDAO kamusDAO;
-
     @FXML
     private Button Login;
-
+    
+    private UserDAO userDAO;
+    private TanamanDAO tanamanDAO;
+    private KamusDAO kamusDAO;
+    
     private boolean isPasswordVisible = false;
 
     public LoginController() {

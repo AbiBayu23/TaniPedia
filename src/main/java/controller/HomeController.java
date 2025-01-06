@@ -3,6 +3,7 @@ import dao.EnsiklopediaDAO;
 import dao.TanamanDAO;
 import dao.UserDAO;
 import dao.KamusDAO;
+import dao.ShopDAO;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -11,6 +12,7 @@ import java.net.URL;
 import model.UserModel;
 import model.KamusModel;
 import model.TanamanModel;
+import model.ShopModel;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -44,144 +46,50 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 
-/**
- * FXML Controller class
- *
- * @author abiba
- */
 public class HomeController implements Initializable {
     private UserModel userModel;
-    @FXML
-    private Button btnOverview;
-    @FXML
-    private Button btnPackages;
-    @FXML
-    private Button btnOrders;
-    @FXML
-    private Button btnMenus;
-    @FXML
-    private Button btnSignout;
-    @FXML
-    private Pane Belanja;
-    @FXML
-    private Pane Ensiklopedia;
-    @FXML
-    private Pane Home;
-    @FXML
-    private Label username;
-    @FXML
-    private Pane Kamus;
-    @FXML
-    private Label hello;
-    
     private UserDAO userDAO;
     private EnsiklopediaDAO ensiklopediaDAO;
     private TanamanDAO tanamanDAO;
     private TanamanModel tanaman;
-    
-    @FXML
-    private ImageView profil;
+    private KamusDAO kamusDAO;
+    private KamusModel kamus;
+    private ShopModel shopModel;
+    private ShopDAO shopDAO;
+    private Pane previousPane;
+    private byte[] fotoEnsiklopediaData;
 
     @FXML
-    private Pane formEnsiklopedia;
+    private Button btnOverview, btnPackages, btnOrders, btnMenus, btnSignout, editProfil, backHome, newPlant, tambahTumbuhan, pilihFotoEnsiklopedia, sourceFoto, cancelEnsi, tambahKamus, batalTambahKamus, addEnsiklopedia, Batal;
     @FXML
-    private Pane profilPengguna;
-    @FXML
-    private ImageView fotoProfil;
-    @FXML
-    private VBox pane;
+    private Pane Belanja, Ensiklopedia, Home, Kamus, formEnsiklopedia, profilPengguna, Tumbuhan, formKamus;
     @FXML
     private AnchorPane profilPane;
     @FXML
-    private Label namaPengguna;
+    private VBox pane;
     @FXML
-    private Label nomorHP;
+    private ImageView profil, fotoProfil, ButtonKamus, ButtonEnsiklopedia;
     @FXML
-    private Label email;
+    private Label username, hello, namaPengguna, nomorHP, email, alamat, namaUsaha, isiJenisTanaman;
     @FXML
-    private Label alamat;
+    private TextField formEmail, formHP, formPengguna, formUsaha, formNamaTanaman, isiFotoEnsiklopedia, formNamaIstilah, searchField;
     @FXML
-    private Label namaUsaha;
-    @FXML
-    private Button editProfil;
-    @FXML
-    private Button backHome;
-    @FXML
-    private TextField formEmail;
-    @FXML
-    private TextField formHP;
-    @FXML
-    private TextField formPengguna;
-    @FXML
-    private TextField formUsaha;
-    @FXML
-    private TextArea formAlamat;
-    private Pane previousPane;
-    @FXML
-    private Button newPlant;
-    @FXML
-    private Pane Tumbuhan;
-    @FXML
-    private Button tambahTumbuhan;
-    @FXML
-    private TextField formNamaTanaman;
+    private TextArea formAlamat, formPanduanBudidaya, formPenangananPenyakit, fieldPenjelasan;
     @FXML
     private ComboBox<String> formJenisTanaman;
     @FXML
-    private Button Batal;
-    @FXML
     private ComboBox<TanamanModel> listTanaman;
-    @FXML
-    private Button pilihFotoEnsiklopedia; // Tombol untuk memilih gambar
-    @FXML
-    private TableColumn<KamusModel, Void> aksi;
-
-    private byte[] fotoEnsiklopediaData; // Penyimpanan sementara untuk data gambar
-
-    
-    @FXML
-    private Label isiJenisTanaman;
-    @FXML
-    private Button sourceFoto;
-    @FXML
-    private Button cancelEnsi;
-    @FXML
-    private TextArea formPanduanBudidaya;
-    @FXML
-    private TextArea formPenangananPenyakit;
-    @FXML
-    private TextField isiFotoEnsiklopedia;
-    @FXML
-    private ImageView ButtonKamus;
-    @FXML
-    private TextArea fieldPenjelasan;
-    @FXML
-    private Button tambahKamus;
-    @FXML
-    private TextField formNamaIstilah;
-    @FXML
-    private Pane formKamus;
-    @FXML
-    private ImageView ButtonEnsiklopedia;
     @FXML
     private TableView<KamusModel> ListKamus;
     @FXML
-    private TableColumn<KamusModel, String> namaIstilah;
+    private TableColumn<KamusModel, String> namaIstilah, isiPenjelasan;
     @FXML
-    private TableColumn<KamusModel, String> isiPenjelasan;
+    private TableColumn<KamusModel, Void> aksi;
     @FXML
-    private Button addEnsiklopedia;
-    private KamusDAO kamusDAO;
-    private KamusModel kamus;
+    private TableView<ShopModel> ListBarang;
     @FXML
-    private Button batalTambahKamus;
-    @FXML
-    private TextField searchField;
-    private Object btnTambah;
+    private TableColumn<ShopModel, String> itemName, priceTag;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showPane(Home);
@@ -210,7 +118,7 @@ public class HomeController implements Initializable {
                 if (newValue instanceof TanamanModel) {
                     TanamanModel tanaman = (TanamanModel) newValue;
                     isiJenisTanaman.setText(tanaman.getJenisTanaman());
-                }else {
+                } else {
                     isiJenisTanaman.setText("Jenis tanaman tidak ditemukan");
                 }
         });
@@ -349,7 +257,6 @@ public class HomeController implements Initializable {
 
         File selectedFile = fileChooser.showOpenDialog(username.getScene().getWindow());
             if (selectedFile != null) {
-            // Optional: Display the selected image in the ImageView
             Image image = new Image(selectedFile.toURI().toString());
             profil.setImage(image);
             fotoProfil.setImage(image);
@@ -560,6 +467,23 @@ public class HomeController implements Initializable {
         } catch (Exception e) {
         }
     }
+
+    void loadShopData() {
+    try {
+        List<ShopModel> shopList = shopDAO.getAllItems(); // Ganti dengan DAO yang sesuai
+        ObservableList<ShopModel> data = FXCollections.observableArrayList(shopList);
+        itemName.setCellValueFactory(new PropertyValueFactory<>("namaIstilah"));
+        priceTag.setCellValueFactory(new PropertyValueFactory<>("penjelasan"));
+        ListBarang.setItems(data);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Gagal memuat data kamus!");
+        alert.showAndWait();
+        }
+    }
     
     void loadKamusData() {
     try {
@@ -567,8 +491,7 @@ public class HomeController implements Initializable {
         ObservableList<KamusModel> data = FXCollections.observableArrayList(kamusList);
         namaIstilah.setCellValueFactory(new PropertyValueFactory<>("namaIstilah"));
         isiPenjelasan.setCellValueFactory(new PropertyValueFactory<>("penjelasan"));
-         // Tambahkan kolom aksi (edit dan delete)
-       aksi.setCellFactory(param -> new TableCell<>() {
+        aksi.setCellFactory(param -> new TableCell<>() {
         @Override
         protected void updateItem(Void item, boolean empty) {
             super.updateItem(item, empty);
@@ -816,8 +739,6 @@ private void editKamus(KamusModel kamus) {
     }
 }
 
-
-
 @FXML
 private void batalTambahKamus(MouseEvent event) {
     // Reset form Kamus
@@ -830,7 +751,6 @@ private void batalTambahKamus(MouseEvent event) {
     // Kembali ke tampilan utama Kamus
     showPane(Kamus);
 }
-
 
         private void deleteKamus(KamusModel kamus) {
             try {
@@ -859,6 +779,3 @@ private void batalTambahKamus(MouseEvent event) {
             }
         }    
     }
-
-
-
