@@ -177,6 +177,7 @@ public class HomeController implements Initializable {
     private Button batalTambahKamus;
     @FXML
     private TextField searchField;
+    private Object btnTambah;
 
     /**
      * Initializes the controller class.
@@ -184,36 +185,35 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showPane(Home);
-        
         List<TanamanModel> tanamanList = tanamanDAO.getAllTanaman();
         loadTanamanToComboBox(tanamanList);
         listTanaman.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-        ObservableList<String> jenisTanamanList = FXCollections.observableArrayList(
-        "Tanaman Buah",
-        "Tanaman Sayur",
-        "Tanaman Hias",
-        "Tanaman Pangan",
-        "Tanaman Umbi"
-        );
-        namaIstilah.setCellValueFactory(cellData -> {
-            System.out.println("Nama Istilah: " + cellData.getValue().getNamaIstilah());
-            return new SimpleStringProperty(cellData.getValue().getNamaIstilah());
-        });
+            ObservableList<String> jenisTanamanList = FXCollections.observableArrayList(
+            "Tanaman Buah",
+            "Tanaman Sayur",
+            "Tanaman Hias",
+            "Tanaman Pangan",
+            "Tanaman Umbi"
+            );
+            namaIstilah.setCellValueFactory(cellData -> {
+                System.out.println("Nama Istilah: " + cellData.getValue().getNamaIstilah());
+                return new SimpleStringProperty(cellData.getValue().getNamaIstilah());
+            });
 
-        isiPenjelasan.setCellValueFactory(cellData -> {
-            System.out.println("Penjelasan: " + cellData.getValue().getPenjelasan());
-            return new SimpleStringProperty(cellData.getValue().getPenjelasan());
+            isiPenjelasan.setCellValueFactory(cellData -> {
+                System.out.println("Penjelasan: " + cellData.getValue().getPenjelasan());
+                return new SimpleStringProperty(cellData.getValue().getPenjelasan());
+            });
+            loadKamusData();
+
+            formJenisTanaman.setItems(jenisTanamanList);
+                if (newValue instanceof TanamanModel) {
+                    TanamanModel tanaman = (TanamanModel) newValue;
+                    isiJenisTanaman.setText(tanaman.getJenisTanaman());
+                }else {
+                    isiJenisTanaman.setText("Jenis tanaman tidak ditemukan");
+                }
         });
-        loadKamusData();
-        
-        formJenisTanaman.setItems(jenisTanamanList);
-        if (newValue instanceof TanamanModel) {
-            TanamanModel tanaman = (TanamanModel) newValue;
-            isiJenisTanaman.setText(tanaman.getJenisTanaman());
-        }else {
-            isiJenisTanaman.setText("Jenis tanaman tidak ditemukan");
-        }
-    });
         aksi.setCellFactory(param -> new TableCell<>() {
             @Override
             protected void updateItem(Void item, boolean empty) {
@@ -237,12 +237,12 @@ public class HomeController implements Initializable {
 
                     HBox actionButtons = new HBox(10, btnEdit, btnDelete);
                     setGraphic(actionButtons);
+                    btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 5 10;");
+                    btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-padding: 5 10;");
+                    }
                 }
-            }
-        });
-
-    
-      }
+            });
+    }
     
     public HomeController() {
         this.userDAO = new UserDAO();
@@ -569,37 +569,37 @@ public class HomeController implements Initializable {
         isiPenjelasan.setCellValueFactory(new PropertyValueFactory<>("penjelasan"));
          // Tambahkan kolom aksi (edit dan delete)
        aksi.setCellFactory(param -> new TableCell<>() {
-    @Override
-    protected void updateItem(Void item, boolean empty) {
-        super.updateItem(item, empty);
+        @Override
+        protected void updateItem(Void item, boolean empty) {
+            super.updateItem(item, empty);
 
-        if (empty) {
-            setGraphic(null);
-        } else {
-            // Buat tombol Edit dan Delete untuk setiap baris
-            Button btnEdit = new Button("Edit");
-            Button btnDelete = new Button("Delete");
+            if (empty) {
+                setGraphic(null);
+            } else {
+                // Buat tombol Edit dan Delete untuk setiap baris
+                Button btnEdit = new Button("Edit");
+                Button btnDelete = new Button("Delete");
 
-            // Aksi tombol Edit
-            btnEdit.setOnAction(event -> {
-                KamusModel kamus = getTableView().getItems().get(getIndex());
-                editKamus(kamus);
-            });
+                // Aksi tombol Edit
+                btnEdit.setOnAction(event -> {
+                    KamusModel kamus = getTableView().getItems().get(getIndex());
+                    editKamus(kamus);
+                });
 
-            // Aksi tombol Delete
-            btnDelete.setOnAction(event -> {
-                KamusModel kamus = getTableView().getItems().get(getIndex());
-                deleteKamus(kamus);
-            });
+                // Aksi tombol Delete
+                btnDelete.setOnAction(event -> {
+                    KamusModel kamus = getTableView().getItems().get(getIndex());
+                    deleteKamus(kamus);
+                });
 
-            // Tambahkan tombol ke dalam HBox
-            HBox actionButtons = new HBox(10, btnEdit, btnDelete);
-            setGraphic(actionButtons);
-        }
-    }
-});
-
-
+                // Tambahkan tombol ke dalam HBox
+                HBox actionButtons = new HBox(10, btnEdit, btnDelete);
+                setGraphic(actionButtons);
+                btnEdit.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 5 10;");
+                btnDelete.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-padding: 5 10;");
+                }
+            }
+        });
         ListKamus.setItems(data);
     } catch (Exception e) {
         e.printStackTrace();
@@ -608,8 +608,8 @@ public class HomeController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText("Gagal memuat data kamus!");
         alert.showAndWait();
+        }
     }
-}
 
     
     @FXML
@@ -745,80 +745,120 @@ public class HomeController implements Initializable {
             alert.showAndWait();
         }
     }
-    @FXML
-    private void batalTambahKamus(MouseEvent event) {
-        // Reset form Kamus
-        formNamaIstilah.clear();
-        fieldPenjelasan.clear();
-
-        // Kembali ke tampilan utama Kamus
-        showPane(Kamus);
-        formKamus.setVisible(false);
-    }
     
-    private void editKamus(KamusModel kamus) {
+    @FXML
+private void editKamus(KamusModel kamus) {
     try {
+        // Tampilkan form untuk mengedit Kamus
+        formKamus.setVisible(true); // Tampilkan form edit Kamus
+        showPane(Kamus);  // Menampilkan tampilan utama Kamus di belakang form
+
         // Isi form dengan data Kamus yang dipilih
         formNamaIstilah.setText(kamus.getNamaIstilah());
         fieldPenjelasan.setText(kamus.getPenjelasan());
 
-        // Setelah pengguna mengedit, perbarui data di database dan TableView
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Edit Kamus");
-        alert.setHeaderText(null);
-        alert.setContentText("Apakah Anda yakin ingin menyimpan perubahan?");
-        Optional<ButtonType> result = alert.showAndWait();
+        // Mengubah fungsi tombol 'Tambah' menjadi 'Simpan Perubahan'
+        Button btnSimpanPerubahan = new Button("Simpan Perubahan");
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            kamus.setNamaIstilah(formNamaIstilah.getText());
-            kamus.setPenjelasan(fieldPenjelasan.getText());
-            kamusDAO.updateKamus(kamus); // Metode untuk memperbarui data di database
-            loadKamusData();
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Edit Kamus");
-            info.setHeaderText(null);
-            info.setContentText("Data istilah berhasil diperbarui!");
-            info.showAndWait();
-        }
+        // Tambahkan event handler untuk tombol "Simpan Perubahan"
+        btnSimpanPerubahan.setOnAction(event -> {
+            try {
+                String namaIstilah = formNamaIstilah.getText();
+                String penjelasan = fieldPenjelasan.getText();
+
+                // Validasi input
+                if (namaIstilah.isEmpty() || penjelasan.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Validasi Input");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Semua field harus diisi!");
+                    alert.showAndWait();
+                    return;
+                }
+
+                // Update data kamus
+                kamus.setNamaIstilah(namaIstilah);
+                kamus.setPenjelasan(penjelasan);
+                kamusDAO.updateKamus(kamus); // Memperbarui data di database
+
+                // Tampilkan pesan sukses
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Edit Kamus");
+                alert.setHeaderText(null);
+                alert.setContentText("Data istilah berhasil diperbarui!");
+                alert.showAndWait();
+
+                // Reset form dan sembunyikan form edit
+                formNamaIstilah.clear();
+                fieldPenjelasan.clear();
+                formKamus.setVisible(false);
+
+                // Muat ulang data ke TableView
+                loadKamusData();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Edit Kamus");
+                alert.setHeaderText(null);
+                alert.setContentText("Terjadi kesalahan saat memperbarui data!");
+                alert.showAndWait();
+            }
+        });
+
     } catch (Exception e) {
         e.printStackTrace();
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Edit Kamus");
         alert.setHeaderText(null);
-        alert.setContentText("Terjadi kesalahan saat memperbarui data!");
+        alert.setContentText("Terjadi kesalahan saat memuat data!");
         alert.showAndWait();
     }
 }
 
-// Metode untuk menghapus data Kamus
-private void deleteKamus(KamusModel kamus) {
-    try {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Hapus Kamus");
-        alert.setHeaderText(null);
-        alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
-        Optional<ButtonType> result = alert.showAndWait();
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            kamusDAO.deleteKamus(kamus); // Metode untuk menghapus data dari database
-            loadKamusData();
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Hapus Kamus");
-            info.setHeaderText(null);
-            info.setContentText("Data istilah berhasil dihapus!");
-            info.showAndWait();
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Hapus Kamus");
-        alert.setHeaderText(null);
-        alert.setContentText("Terjadi kesalahan saat menghapus data!");
-        alert.showAndWait();
+
+@FXML
+private void batalTambahKamus(MouseEvent event) {
+    // Reset form Kamus
+    formNamaIstilah.clear();
+    fieldPenjelasan.clear();
+
+    // Sembunyikan form tambah atau edit Kamus
+    formKamus.setVisible(false);
+
+    // Kembali ke tampilan utama Kamus
+    showPane(Kamus);
+}
+
+
+        private void deleteKamus(KamusModel kamus) {
+            try {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Hapus Kamus");
+                alert.setHeaderText(null);
+                alert.setContentText("Apakah Anda yakin ingin menghapus data ini?");
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    kamusDAO.deleteKamus(kamus); // Metode untuk menghapus data dari database
+                    loadKamusData();
+                    Alert info = new Alert(Alert.AlertType.INFORMATION);
+                    info.setTitle("Hapus Kamus");
+                    info.setHeaderText(null);
+                    info.setContentText("Data istilah berhasil dihapus!");
+                    info.showAndWait();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hapus Kamus");
+                alert.setHeaderText(null);
+                alert.setContentText("Terjadi kesalahan saat menghapus data!");
+                alert.showAndWait();
+            }
+        }    
     }
-}
-    
-}
 
 
 
