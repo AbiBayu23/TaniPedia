@@ -14,6 +14,13 @@ public class KamusModel {
     public String getNamaIstilah() {
         return namaIstilah;
     }
+    
+    private KamusModel selectedKamus;
+
+    private KamusModel getSelectedKamus() {
+        return selectedKamus;
+    }
+
 
     // Setter untuk namaIstilah
     public void setNamaIstilah(String namaIstilah) {
