@@ -1,6 +1,15 @@
 package model;
 
 public class KamusModel {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    private int id;
     private String namaIstilah;
     private String penjelasan;
 
