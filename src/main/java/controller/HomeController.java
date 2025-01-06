@@ -168,6 +168,8 @@ public class HomeController implements Initializable {
     private KamusModel kamus;
     @FXML
     private Button batalTambahKamus;
+    @FXML
+    private TextField searchField;
 
     /**
      * Initializes the controller class.
@@ -527,8 +529,7 @@ public class HomeController implements Initializable {
         List<KamusModel> kamusList = kamusDAO.getAllKamus(); // Ganti dengan DAO yang sesuai
         ObservableList<KamusModel> data = FXCollections.observableArrayList(kamusList);
         namaIstilah.setCellValueFactory(new PropertyValueFactory<>("namaIstilah"));
-    isiPenjelasan.setCellValueFactory(new PropertyValueFactory<>("penjelasan"));
-
+        isiPenjelasan.setCellValueFactory(new PropertyValueFactory<>("penjelasan"));
         ListKamus.setItems(data);
     } catch (Exception e) {
         e.printStackTrace();
