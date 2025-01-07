@@ -78,6 +78,7 @@ public class LoginController {
                 homeController.setUserModel(user);
                 homeController.loadTanamanToComboBox(tanamanbox);
                 homeController.loadKamusData();
+                homeController.loadShopData();
                 Stage stage = (Stage) Login.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.show();
