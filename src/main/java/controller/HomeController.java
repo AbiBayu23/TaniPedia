@@ -112,7 +112,7 @@ public class HomeController implements Initializable {
     @FXML
     private TextField formImageItem;
     @FXML
-    private TableView<?> listBarang;
+    private TableView<ShopModel> listBarang;
     @FXML
     private Button SourceItem;
     @FXML
@@ -120,6 +120,8 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        shopDAO = new ShopDAO();
+        loadShopData();
         showPane(Home);
         List<TanamanModel> tanamanList = tanamanDAO.getAllTanaman();
         loadTanamanToComboBox(tanamanList);
@@ -549,17 +551,32 @@ public class HomeController implements Initializable {
 
     void loadShopData() {
     try {
-        List<ShopModel> shopList = shopDAO.getAllItems(); // Ganti dengan DAO yang sesuai
-        ObservableList<ShopModel> data = FXCollections.observableArrayList(shopList);
-        itemName.setCellValueFactory(new PropertyValueFactory<>("namaIstilah"));
-        priceTag.setCellValueFactory(new PropertyValueFactory<>("penjelasan"));
-        ListBarang.setItems(data);
+        List<ShopModel> shopList = shopDAO.getAllItems();
+        ObservableList<ShopModel> items = FXCollections.observableArrayList(shopList);
+        shopImg.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(byte[] item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    ImageView imageView = new ImageView(new Image(new ByteArrayInputStream(item)));
+                    imageView.setFitWidth(50);  // Sesuaikan ukuran gambar
+                    imageView.setFitHeight(50);
+                    setGraphic(imageView);
+                }
+            }
+        });
+        itemName.setCellValueFactory(new PropertyValueFactory<>("namaItem"));
+        priceTag.setCellValueFactory(new PropertyValueFactory<>("hargaItem"));
+        stok.setCellValueFactory(new PropertyValueFactory<>("stokItem"));
+        listBarang.setItems(items);
     } catch (Exception e) {
         e.printStackTrace();
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(null);
-        alert.setContentText("Gagal memuat data kamus!");
+        alert.setContentText("Gagal memuat data shop!");
         alert.showAndWait();
         }
     }
@@ -913,22 +930,6 @@ private void loadItemData() {
         itemName.setCellValueFactory(new PropertyValueFactory<>("namaItem")); // Properti di ShopModel
         priceTag.setCellValueFactory(new PropertyValueFactory<>("hargaItem")); // Properti di ShopModel
         stok.setCellValueFactory(new PropertyValueFactory<>("stokItem")); // Properti di ShopModel
-
-        // Kolom untuk menampilkan gambar (opsional, jika diperlukan)
-        shopImg.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(byte[] item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
-                } else {
-                    ImageView imageView = new ImageView(new Image(new ByteArrayInputStream(item)));
-                    imageView.setFitWidth(50);  // Sesuaikan ukuran gambar
-                    imageView.setFitHeight(50);
-                    setGraphic(imageView);
-                }
-            }
-        });
 
         // Kolom untuk aksi (Edit & Delete)
         aksiBelanja.setCellFactory(param -> new TableCell<>() {
