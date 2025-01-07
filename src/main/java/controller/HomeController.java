@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
+import model.EnsiklopediaModel;
 import model.UserModel;
 import model.KamusModel;
 import model.TanamanModel;
@@ -50,6 +51,7 @@ public class HomeController implements Initializable {
     private UserModel userModel;
     private UserDAO userDAO;
     private EnsiklopediaDAO ensiklopediaDAO;
+    private EnsiklopediaModel ensiklopediaModel;
     private TanamanDAO tanamanDAO;
     private TanamanModel tanaman;
     private KamusDAO kamusDAO;
@@ -86,7 +88,6 @@ public class HomeController implements Initializable {
     private TableColumn<KamusModel, String> namaIstilah, isiPenjelasan;
     @FXML
     private TableColumn<KamusModel, Void> aksi;
-
     @FXML
     private TableColumn<ShopModel, String> itemName;
     @FXML
@@ -117,6 +118,12 @@ public class HomeController implements Initializable {
     private Button SourceItem;
     @FXML
     private Pane formItem;
+    @FXML
+    private TableView<EnsiklopediaModel> contentTable;
+    @FXML
+    private TableColumn<EnsiklopediaModel, byte[]> contentImg;
+    @FXML
+    private TableColumn<EnsiklopediaModel, String> contentTitle;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -124,6 +131,7 @@ public class HomeController implements Initializable {
         List<TanamanModel> tanamanList = tanamanDAO.getAllTanaman();
         loadTanamanToComboBox(tanamanList);
         loadItemData();
+        loadContentData();
         listTanaman.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             ObservableList<String> jenisTanamanList = FXCollections.observableArrayList(
             "Tanaman Buah",
@@ -178,9 +186,8 @@ public class HomeController implements Initializable {
                     btnDeleteItem.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-padding: 5 10;");
                     }
                 }
-
             private void editItem(ShopModel shop) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                throw new UnsupportedOperationException("Not supported yet."); 
             }
           
             });
@@ -542,43 +549,54 @@ public class HomeController implements Initializable {
         } catch (Exception e) {
         }
     }
+    
+    void loadContentData() {
+        try {
+            List<EnsiklopediaModel> ensiklopediaList = ensiklopediaDAO.getAllEnsiklopedia(); 
+            ObservableList<EnsiklopediaModel> data = FXCollections.observableArrayList(ensiklopediaList);
+            contentTitle.setCellValueFactory(new PropertyValueFactory<>("judulKonten"));
+            contentTable.setItems(data);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Gagal memuat data item!");
+                alert.showAndWait();
+        }
+    }
 
     void loadShopData() {
-    try {
-        List<ShopModel> shopList = shopDAO.getAllItems(); // Ganti dengan DAO yang sesuai
-        ObservableList<ShopModel> data = FXCollections.observableArrayList(shopList);
-        
-        // Set kolom dengan properti yang sesuai dari model
-        itemName.setCellValueFactory(new PropertyValueFactory<>("namaItem")); // Properti di ShopModel
-        priceTag.setCellValueFactory(new PropertyValueFactory<>("hargaItem")); // Properti di ShopModel
-        stok.setCellValueFactory(new PropertyValueFactory<>("stokItem")); // Properti di ShopModel
-        shopImg.setCellFactory(param -> new TableCell<ShopModel, byte[]>() {
-            @Override
-            protected void updateItem(byte[] imageItem, boolean empty) {
-                super.updateItem(imageItem, empty);
+        try {
+            List<ShopModel> shopList = shopDAO.getAllItems(); 
+            ObservableList<ShopModel> data = FXCollections.observableArrayList(shopList);
+            itemName.setCellValueFactory(new PropertyValueFactory<>("namaItem"));
+            priceTag.setCellValueFactory(new PropertyValueFactory<>("hargaItem"));
+            stok.setCellValueFactory(new PropertyValueFactory<>("stokItem")); 
+            shopImg.setCellFactory(param -> new TableCell<ShopModel, byte[]>() {
+                @Override
+                protected void updateItem(byte[] imageItem, boolean empty) {
+                    super.updateItem(imageItem, empty);
 
-                if (empty || imageItem == null) {
-                    setGraphic(null);
-                } else {
-                    ImageView imageView = new ImageView(new Image(new ByteArrayInputStream(imageItem)));
-                    imageView.setFitWidth(50);  // Atur lebar gambar
-                    imageView.setFitHeight(50); // Atur tinggi gambar
-                    setGraphic(imageView);
+                    if (empty || imageItem == null) {
+                        setGraphic(null);
+                    } else {
+                        ImageView imageView = new ImageView(new Image(new ByteArrayInputStream(imageItem)));
+                        imageView.setFitWidth(50);
+                        imageView.setFitHeight(50);
+                        setGraphic(imageView);
+                    }
+                    listBarang.setItems(data);
                 }
-
-                listBarang.setItems(data);
-            }
-        });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Gagal memuat data item!");
-            alert.showAndWait();
-        
-    }
-    
+            });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Gagal memuat data item!");
+                alert.showAndWait();
+        }
     }
     
     void loadKamusData() {
@@ -919,80 +937,78 @@ private void batalTambahKamus(MouseEvent event) {
         }
     }
     
-private void loadItemData() {
-    try {
-        // Ambil semua data dari database melalui DAO
-        List<ShopModel> itemList = shopDAO.getAllItems(); // Pastikan DAO memiliki metode getAllItems()
-        ObservableList<ShopModel> data = FXCollections.observableArrayList(itemList);
-        
-        // Set kolom dengan properti yang sesuai dari model
-        itemName.setCellValueFactory(new PropertyValueFactory<>("namaItem")); // Properti di ShopModel
-        priceTag.setCellValueFactory(new PropertyValueFactory<>("hargaItem")); // Properti di ShopModel
-        stok.setCellValueFactory(new PropertyValueFactory<>("stokItem")); // Properti di ShopModel
-        shopImg.setCellFactory(param -> new TableCell<ShopModel, byte[]>() {
-    @Override
-    protected void updateItem(byte[] imageItem, boolean empty) {
-        super.updateItem(imageItem, empty);
+    private void loadItemData() {
+        try {
+            List<ShopModel> itemList = shopDAO.getAllItems();
+            ObservableList<ShopModel> data = FXCollections.observableArrayList(itemList);
+            itemName.setCellValueFactory(new PropertyValueFactory<>("namaItem"));
+            priceTag.setCellValueFactory(new PropertyValueFactory<>("hargaItem"));
+            stok.setCellValueFactory(new PropertyValueFactory<>("stokItem")); 
+            shopImg.setCellFactory(param -> new TableCell<ShopModel, byte[]>() {
+        @Override
+        protected void updateItem(byte[] imageItem, boolean empty) {
+            super.updateItem(imageItem, empty);
 
-        if (empty || imageItem == null) {
-            setGraphic(null);
-        } else {
-            ImageView imageView = new ImageView(new Image(new ByteArrayInputStream(imageItem)));
-            imageView.setFitWidth(50);  // Atur lebar gambar
-            imageView.setFitHeight(50); // Atur tinggi gambar
-            setGraphic(imageView);
+            if (empty || imageItem == null) {
+                setGraphic(null);
+            } else {
+                ImageView imageView = new ImageView(new Image(new ByteArrayInputStream(imageItem)));
+                imageView.setFitWidth(50);  // Atur lebar gambar
+                imageView.setFitHeight(50); // Atur tinggi gambar
+                setGraphic(imageView);
+            }
+        }
+    });
+
+
+
+            // Kolom untuk aksi (Edit & Delete)
+            aksiBelanja.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        // Tombol Edit
+                        Button btnEditItem = new Button("Edit");
+                        btnEditItem.setOnAction(event -> {
+                            ShopModel shop = getTableView().getItems().get(getIndex());
+                            editItem(shop);
+                        });
+
+                        // Tombol Delete
+                        Button btnDeleteItem = new Button("Delete");
+                        btnDeleteItem.setOnAction(event -> {
+                            ShopModel shop = getTableView().getItems().get(getIndex());
+                            deleteItem(shop);
+                        });
+
+                        // Tambahkan tombol ke dalam HBox
+                        HBox actionButtons = new HBox(10, btnEditItem, btnDeleteItem);
+                        setGraphic(actionButtons);
+
+                        // Tambahkan styling ke tombol
+                        btnEditItem.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 5 10;");
+                        btnDeleteItem.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-padding: 5 10;");
+                    }
+                }
+
+                private void editItem(ShopModel shop) {
+                    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                }
+            });
+
+            // Set data ke TableView
+            listBarang.setItems(data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
     }
-});
-
-        
-
-        // Kolom untuk aksi (Edit & Delete)
-        aksiBelanja.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    // Tombol Edit
-                    Button btnEditItem = new Button("Edit");
-                    btnEditItem.setOnAction(event -> {
-                        ShopModel shop = getTableView().getItems().get(getIndex());
-                        editItem(shop);
-                    });
-
-                    // Tombol Delete
-                    Button btnDeleteItem = new Button("Delete");
-                    btnDeleteItem.setOnAction(event -> {
-                        ShopModel shop = getTableView().getItems().get(getIndex());
-                        deleteItem(shop);
-                    });
-
-                    // Tambahkan tombol ke dalam HBox
-                    HBox actionButtons = new HBox(10, btnEditItem, btnDeleteItem);
-                    setGraphic(actionButtons);
-
-                    // Tambahkan styling ke tombol
-                    btnEditItem.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 5 10;");
-                    btnDeleteItem.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-padding: 5 10;");
-                }
-            }
-
-            private void editItem(ShopModel shop) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-            }
-        });
-
-        // Set data ke TableView
-        listBarang.setItems(data);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        
-    }
-}
+    
      private void deleteItem(ShopModel shopModel) {
             try {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1054,11 +1070,7 @@ private void loadItemData() {
 
     @FXML
     private void batalTambahItem(MouseEvent event) {
-
-    // Sembunyikan form tambah atau edit Kamus
-    formItem.setVisible(false);
-
-    // Kembali ke tampilan utama Kamus
-    showPane(Belanja);
-    }
+        formItem.setVisible(false);
+        showPane(Belanja);
+        }
     }
