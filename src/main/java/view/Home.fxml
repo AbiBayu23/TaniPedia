@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
    <children>
       <VBox fx:id="pane" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #68a971; -fx-border-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -106,7 +106,7 @@
       </VBox>
       <StackPane layoutX="200.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #EEEED4;">
          <children>
-            <Pane fx:id="Ensiklopedia" prefHeight="376.0" prefWidth="400.0" style="-fx-border-color: #000000;" visible="false">
+            <Pane fx:id="Ensiklopedia" prefHeight="376.0" prefWidth="400.0" style="-fx-border-color: #000000;">
                <children>
                   <TextField layoutX="29.0" layoutY="47.0" prefHeight="27.0" prefWidth="347.0" promptText="search" style="-fx-background-color: #EEEED4; -fx-border-color: #000000; -fx-border-radius: 2em;" text="Search" />
                   <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="335.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
@@ -135,14 +135,18 @@
                   </ImageView>
                   <ScrollPane layoutX="27.0" layoutY="85.0" prefHeight="263.0" prefWidth="347.0">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="350.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="335.0">
+                           <children>
+                              <TableView fx:id="contentTable" prefHeight="263.0" prefWidth="335.0">
+                                <columns>
+                                  <TableColumn fx:id="contentImg" prefWidth="131.19994813203812" text="Gambar" />
+                                  <TableColumn fx:id="contentTitle" prefWidth="153.60008239746094" text="Judul" />
+                                    <TableColumn fx:id="contentAction" prefWidth="51.20001220703125" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
                     </content>
                   </ScrollPane>
-                  <ImageView fx:id="ButtonEnsiklopedia1" fitHeight="39.0" fitWidth="33.0" layoutX="353.0" layoutY="363.0" onMouseClicked="#showPengisian" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Icon/plus.png" />
-                     </image>
-                  </ImageView>
                </children>
             </Pane>
             <Pane fx:id="Home" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" visible="false">
@@ -445,7 +449,7 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="Belanja" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;">
+            <Pane fx:id="Belanja" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" visible="false">
                <children>
                   <AnchorPane prefHeight="39.0" prefWidth="400.0" style="-fx-background-color: #68A971; -fx-border-color: #000000;">
                      <children>
