@@ -5,8 +5,10 @@ import model.ShopModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.KamusModel;
 
 public class ShopDAO extends BaseDAO {
 
@@ -18,10 +20,10 @@ public class ShopDAO extends BaseDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ShopModel item = new ShopModel(
-                    rs.getInt("item_id"),
                     rs.getString("nama_item"),
-                    rs.getDouble("harga_item"),
-                    rs.getString("jenis_item")
+                    rs.getInt("harga_item"),
+                    rs.getInt("stok_item"),
+                    rs.getBytes("image_item")
                 );
                 items.add(item);
             }
@@ -33,12 +35,13 @@ public class ShopDAO extends BaseDAO {
     }
 
     public void insertItem(ShopModel item) {
-        String query = "INSERT INTO shopitem (nama_item, harga_item, jenis_item) VALUES (?, ?, ?)";
+        String query = "INSERT INTO shopitem (nama_item, harga_item, stok_item, image_item) VALUES (?, ?, ?, ?)";
 
         try (Connection con = getCon(); PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, item.getNamaItem());
             ps.setDouble(2, item.getHargaItem());
-            ps.setString(3, item.getJenisItem());
+            ps.setInt(3, item.getStokItem());
+            ps.setBytes(4, item.getImageItem());
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +54,7 @@ public class ShopDAO extends BaseDAO {
         try (Connection con = getCon(); PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, item.getNamaItem());
             ps.setDouble(2, item.getHargaItem());
-            ps.setString(3, item.getJenisItem());
+            ps.setInt(3, item.getStokItem());
             ps.setInt(4, item.getItemId());
             ps.executeUpdate();
         } catch (Exception e) {
@@ -59,14 +62,14 @@ public class ShopDAO extends BaseDAO {
         }
     }
 
-    public void deleteItem(int itemId) {
-        String query = "DELETE FROM shopitem WHERE item_id = ?";
+    
+    public void deleteItem(ShopModel shopModel) throws SQLException {
+        String query = "DELETE FROM kamus WHERE nama_istilah = ?";
+        try (Connection connection = BaseDAO.getCon();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-        try (Connection con = getCon(); PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, itemId);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+            statement.setString(1, shopModel.getNamaItem());
+            statement.executeUpdate();
         }
     }
 }
